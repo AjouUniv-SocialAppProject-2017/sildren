@@ -9,4 +9,6 @@ public class MergeTest {
 
     int test1;
     int test2;
+
+    test2 = 1;
 }

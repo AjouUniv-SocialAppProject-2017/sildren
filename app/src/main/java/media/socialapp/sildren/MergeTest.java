@@ -9,4 +9,5 @@ public class MergeTest {
 
     int test1;
     int testest;
+    int test3;
 }

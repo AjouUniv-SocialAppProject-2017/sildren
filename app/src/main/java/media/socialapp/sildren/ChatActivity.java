@@ -1,6 +1,6 @@
 package media.socialapp.sildren;
 
-//abcadsfas
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -89,7 +89,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initFirebaseDatabase() {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference();
+        mDatabaseReference = mFirebaseDatabase.getReference("message");
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -123,7 +123,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             public void onCancelled(DatabaseError databaseError) {
             }
         };
-        mDatabaseReference.child("message").addChildEventListener(mChildEventListener);
+        mDatabaseReference.addChildEventListener(mChildEventListener);
     }
 
     private void initFirebaseAuth() {
@@ -252,7 +252,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     chatData.time = System.currentTimeMillis();
                     chatData.userEmail = mAuth.getCurrentUser().getEmail();
                     chatData.userPhotoUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
-                    mDatabaseReference.child("message").push().setValue(chatData);
+                    mDatabaseReference.push().setValue(chatData);
                 }
                 break;
             case R.id.btn_google_signin:

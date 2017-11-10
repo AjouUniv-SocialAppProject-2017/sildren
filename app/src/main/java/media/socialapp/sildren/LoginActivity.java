@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // View
     private ListView mListView;
     private SignInButton mBtnGoogleSignIn;
+    private Button mBtnSignUp;
 
     // Values
     private String userName;
@@ -54,6 +56,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mBtnSignUp = (Button) findViewById(R.id.btn_signUp);
+        mBtnSignUp.setOnClickListener(this);
         initViews();
 //        initFirebaseDatabase();
         initFirebaseAuth();
@@ -64,45 +68,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mBtnGoogleSignIn = (SignInButton) findViewById(R.id.btn_google_signin);
         mBtnGoogleSignIn.setOnClickListener(this);
     }
-
-//    private void initFirebaseDatabase() {
-//        mFirebaseDatabase = FirebaseDatabase.getInstance();
-//        mDatabaseReference = mFirebaseDatabase.getReference("message");
-//        mChildEventListener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                ChatData chatData = dataSnapshot.getValue(ChatData.class);
-//                chatData.firebaseKey = dataSnapshot.getKey();
-//                mAdapter.add(chatData);
-//                mListView.smoothScrollToPosition(mAdapter.getCount());
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                String firebaseKey = dataSnapshot.getKey();
-//                int count = mAdapter.getCount();
-//                for (int i = 0; i < count; i++) {
-//                    if (mAdapter.getItem(i).firebaseKey.equals(firebaseKey)) {
-//                        mAdapter.remove(mAdapter.getItem(i));
-//                        break;
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//            }
-//        };
-//        mDatabaseReference.addChildEventListener(mChildEventListener);
-//    }
 
     public void initFirebaseAuth() {
         mAuth = FirebaseAuth.getInstance();
@@ -224,6 +189,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_google_signout:
                 signOut();
+                break;
+
+            case R.id.btn_signUp:
+                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                startActivity(intent);
                 break;
         }
     }

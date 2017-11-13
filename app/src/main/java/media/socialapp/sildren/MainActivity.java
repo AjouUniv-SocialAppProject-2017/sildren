@@ -19,16 +19,22 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Intent intent;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                case R.id.navigation_camera:
+                    mTextMessage.setText(R.string.title_camera);
+                    intent = new Intent(getApplicationContext(), ShareActivity.class);
                     startActivity(intent);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_dashboard:
+                    mTextMessage.setText(R.string.title_dashboard);
+                    intent = new Intent(getApplicationContext(), ChatActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.navigation_map:
                     MapFragment fragment1 = new MapFragment();
                     fragment1.setArguments(new Bundle());
                     FragmentManager fm = getSupportFragmentManager();

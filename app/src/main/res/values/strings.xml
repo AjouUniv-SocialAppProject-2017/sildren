@@ -2,8 +2,10 @@
     <string name="app_name">Sildren</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">단톡방</string>
+    <string name="title_dashboard">채팅</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_map">지도</string>
+    <string name="title_camera">카메라</string>
 
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
@@ -39,4 +41,9 @@
     <string name="emailpassword_title_text">Email and Password</string>
     <string name="hint_birth">생일</string>
     <string name="hint_name">이름</string>
+
+    <string name="gallery">GALLERY</string>
+    <string name="photo">PHOTO</string>
 </resources>
+
+

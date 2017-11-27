@@ -36,7 +36,8 @@
         <activity
             android:name=".SignupActivity"
             android:label="SignupActivity" />
-        <activity android:name=".ShareActivity"></activity>
+        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".NextActivity"></activity>
     </application>
 
 </manifest>

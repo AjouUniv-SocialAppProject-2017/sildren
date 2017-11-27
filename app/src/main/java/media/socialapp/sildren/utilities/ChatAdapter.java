@@ -1,4 +1,4 @@
-package media.socialapp.sildren;
+package media.socialapp.sildren.utilities;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -14,9 +14,8 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-/**
- * Created by DongWon on 2017-09-09.
- */
+import media.socialapp.sildren.DataModels.ChatData;
+import media.socialapp.sildren.R;
 
 public class ChatAdapter extends ArrayAdapter<ChatData> {
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("a h:mm", Locale.getDefault());
@@ -24,19 +23,21 @@ public class ChatAdapter extends ArrayAdapter<ChatData> {
     private final static int TYPE_ANOTHER = 1;
     private String mMyEmail;
 
-    public ChatAdapter(Context context, int resource){
+    public ChatAdapter(Context context, int resource) {
         super(context, resource);
 
     }
 
-    public void setEmail(String email) { mMyEmail = email;}
+    public void setEmail(String email) {
+        mMyEmail = email;
+    }
 
     private View setAnotherView(LayoutInflater inflater) {
         View convertView = inflater.inflate(R.layout.listitem_chat, null);
         ViewHolderAnother holder = new ViewHolderAnother();
         holder.bindView(convertView);
         convertView.setTag(holder);
-        return  convertView;
+        return convertView;
     }
 
     private View setMySelfView(LayoutInflater inflater) {
@@ -73,8 +74,11 @@ public class ChatAdapter extends ArrayAdapter<ChatData> {
 
         return convertView;
     }
+
     @Override
-    public int getViewTypeCount() { return 2;}
+    public int getViewTypeCount() {
+        return 2;
+    }
 
     @Override
     public int getItemViewType(int position) {

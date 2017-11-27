@@ -1,8 +1,4 @@
-package media.socialapp.sildren;
-
-/**
- * Created by DongWon on 2017-09-09.
- */
+package media.socialapp.sildren.DataModels;
 
 public class ChatData {
     public String firebaseKey;

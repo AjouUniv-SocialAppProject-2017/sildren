@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,24 +34,27 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Random;
 
+import media.socialapp.sildren.utilities.ChatAdapter;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int RC_SIGN_IN = 1001;
-    //Firebase - Realtime Database
+    private static final String TAG = "LoginActivity";
+
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
 
-    // Firebase - Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
 
-    // View
     private ListView mListView;
     private SignInButton mBtnGoogleSignIn;
     private Button mBtnSignUp;
+    private Button mBtnSignIn;
+    private EditText mEmailField;
+    private EditText mPasswordField;
 
-    // Values
     private String userName;
     private ChatAdapter mAdapter;
 
@@ -56,13 +62,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Buttons
         mBtnSignUp = (Button) findViewById(R.id.btn_signUp);
         mBtnSignUp.setOnClickListener(this);
+        mBtnSignIn = (Button) findViewById(R.id.btn_signIn);
+        mBtnSignIn.setOnClickListener(this);
+        mEmailField = (EditText) findViewById(R.id.input_id);
+        mPasswordField = (EditText) findViewById(R.id.input_pw);
+
         initViews();
-//        initFirebaseDatabase();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference("user");
         initFirebaseAuth();
         initValues();
     }
+
 
     private void initViews() {
         mBtnGoogleSignIn = (SignInButton) findViewById(R.id.btn_google_signin);
@@ -97,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (user == null) {
             userName = "Guest" + new Random().nextInt(5000);
         } else {
-            userName  = user.getDisplayName();
+            userName = user.getDisplayName();
         }
     }
 
@@ -117,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void signIn() {
+    private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -142,12 +157,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onStop() {
-        super.onStop();;
+        super.onStop();
+        ;
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
     @Override
-    protected void onResume() { super.onResume(); }
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onDestroy() {
@@ -165,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(!task.isSuccessful()) {
+                                if (!task.isSuccessful()) {
                                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
@@ -173,27 +191,81 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(intent);
                             }
                         });
-            }   else {
+            } else {
                 updateProfile();
             }
         }
+    }
+
+    private void signIn(String email, String password) {
+        Log.d(TAG, "signIn:" + email);
+        if (!validateForm()) {
+            return;
+        }
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithEmail:success");
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "!task.isSuccesful()", task.getException());
+
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Required.");
+            valid = false;
+        } else {
+            mEmailField.setError(null);
+        }
+
+        String password = mPasswordField.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mPasswordField.setError("Required.");
+            valid = false;
+        } else {
+            mPasswordField.setError(null);
+        }
+        return valid;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_google_signin:
-                signIn();
+                googleSignIn();
                 Toast.makeText(LoginActivity.this, "Sign In.",
                         Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.btn_google_signout:
-                signOut();
                 break;
 
             case R.id.btn_signUp:
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivity(intent);
+                break;
+
+            case R.id.btn_signIn:
+                Toast.makeText(LoginActivity.this, "SignIn Clicked",
+                        Toast.LENGTH_SHORT).show();
+                signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
                 break;
         }
     }

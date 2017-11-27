@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,27 +39,24 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Random;
 
+import media.socialapp.sildren.DataModels.ChatData;
+import media.socialapp.sildren.utilities.ChatAdapter;
+
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int RC_SIGN_IN = 1001;
+    private static final String TAG = "ChatActivity";
 
-    //Firebase - Realtime Database
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
 
-    // Firebase - Authentication
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
 
-    // Views
     private ListView mListView;
     private EditText mEdtMessage;
-    private Button mBtnGoogleSignOut;
-    private TextView mTxtProfileInfo;
-    private ImageView mImgProfile;
 
-    // Values
     private ChatAdapter mAdapter;
     private String userName;
 
@@ -77,14 +75,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         mAdapter = new ChatAdapter(this, 0);
         mListView.setAdapter(mAdapter);
 
-        mEdtMessage  = (EditText) findViewById(R.id.edit_message);
+        mEdtMessage = (EditText) findViewById(R.id.edit_message);
         findViewById(R.id.btn_send).setOnClickListener(this);
 
-        mBtnGoogleSignOut = (Button) findViewById(R.id.btn_google_signout);
-        mBtnGoogleSignOut.setOnClickListener(this);
-
-        mTxtProfileInfo = (TextView) findViewById(R.id.txt_profile_info);
-        mImgProfile = (ImageView) findViewById(R.id.img_profile);
     }
 
     private void initFirebaseDatabase() {
@@ -154,12 +147,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         if (user == null) {
             userName = "Guest" + new Random().nextInt(5000);
         } else {
-            userName  = user.getDisplayName();
+            userName = user.getDisplayName();
         }
     }
 
     private void updateProfile() {
         FirebaseUser user = mAuth.getCurrentUser();
+
         if (user == null) {
             // 비 로그인 상태 (메시지를 전송할 수 없다.)
             mAdapter.setEmail(null);
@@ -167,32 +161,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         } else {
             // 로그인 상태
-            mBtnGoogleSignOut.setVisibility(View.VISIBLE);
-            mTxtProfileInfo.setVisibility(View.VISIBLE);
-            mImgProfile.setVisibility(View.VISIBLE);
             findViewById(R.id.btn_send).setVisibility(View.VISIBLE);
 
             userName = user.getDisplayName();
             String email = user.getEmail();
             StringBuilder profile = new StringBuilder();
             profile.append(userName).append("\n").append(user.getEmail());
-            mTxtProfileInfo.setText(profile);
             mAdapter.setEmail(email);
             mAdapter.notifyDataSetChanged();
-
-            Picasso.with(this).load(user.getPhotoUrl()).into(mImgProfile);
         }
-    }
-
-    private void signOut() {
-        mAuth.signOut();
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        updateProfile();
-                    }
-                });
     }
 
     @Override
@@ -203,12 +180,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onStop() {
-        super.onStop();;
+        super.onStop();
+        ;
         mAuth.removeAuthStateListener(mAuthListener);
     }
 
     @Override
-    protected void onResume() { super.onResume(); }
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onDestroy() {
@@ -227,13 +207,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(!task.isSuccessful()) {
+                                if (!task.isSuccessful()) {
                                     Toast.makeText(ChatActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-            }   else {
+            } else {
                 updateProfile();
             }
         }
@@ -243,6 +223,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_send:
+                Log.d(TAG, "chat send btn clicked");
                 String message = mEdtMessage.getText().toString();
                 if (!TextUtils.isEmpty(message)) {
                     mEdtMessage.setText("");
@@ -251,17 +232,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     chatData.message = message;
                     chatData.time = System.currentTimeMillis();
                     chatData.userEmail = mAuth.getCurrentUser().getEmail();
-                    chatData.userPhotoUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
+                    if (mAuth.getCurrentUser().getPhotoUrl() != null)
+                        chatData.userPhotoUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
                     mDatabaseReference.push().setValue(chatData);
                 }
                 break;
             case R.id.btn_google_signin:
                 break;
-            case R.id.btn_google_signout:
-                signOut();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                break;
+
         }
     }
 }

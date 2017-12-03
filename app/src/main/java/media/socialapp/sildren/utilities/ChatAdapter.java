@@ -110,7 +110,6 @@ public class ChatAdapter extends ArrayAdapter<ChatData> {
             mTxtMessage.setText(chatData.message);
             mTxtTime.setText(mSimpleDateFormat.format(chatData.time));
         }
-
     }
 
     private class ViewHolderMySelf {

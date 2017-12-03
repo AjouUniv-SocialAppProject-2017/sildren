@@ -1,4 +1,6 @@
 <resources>
+
+    <!--Title -->
     <string name="app_name">Sildren</string>
     <string name="title_activity_main">실드런</string>
     <string name="title_home">홈</string>
@@ -7,7 +9,23 @@
     <string name="title_map">지도</string>
     <string name="title_camera">카메라</string>
 
-    <string name="hint_user_id">User ID</string>
+
+    <!--Hint-->
+    <string name="hint_user_id">아이디</string>
+    <string name="hint_email">이메일</string>
+    <string name="hint_password">비밀번호</string>
+    <string name="hint_phone_number">핸드폰 번호</string>
+    <string name="hint_verification_code">Verification Code</string>
+    <string name="hint_birth">생일</string>
+    <string name="hint_name">이름</string>
+    <string name="hint_title">제목</string>
+    <string name="hint_location">위치</string>
+    <string name="hint_recruit">모집 인원</string>
+    <string name="hint_content">내용</string>
+    <string name="hint_date">날짜</string>
+    <string name="hint_start_time">시작</string>
+    <string name="hint_end_time">종료</string>
+
     <string name="get_custom_token">Get Token</string>
     <string name="sign_in">Sign In</string>
     <string name="create_account">Create Account</string>
@@ -19,15 +37,13 @@
     <string name="signed_in">Signed In</string>
     <string name="signed_out">Signed Out</string>
     <string name="token_null">Token: null</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
+
     <string name="desc_firebase_lockup">Firebase logo and name</string>
     <string name="auth_failed">Authentication failed</string>
     <string name="start_phone_auth">Start</string>
     <string name="verify_phone_auth">Verify</string>
     <string name="resend_phone_auth">Resend</string>
-    <string name="hint_phone_number">Phone Number</string>
-    <string name="hint_verification_code">Verification Code</string>
+
     <string name="status_code_sent">Code Sent</string>
     <string name="status_verification_failed">Verification failed</string>
     <string name="status_verification_succeeded">Verification succeeded</string>
@@ -39,8 +55,7 @@
 
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="emailpassword_title_text">Email and Password</string>
-    <string name="hint_birth">생일</string>
-    <string name="hint_name">이름</string>
+
 
     <string name="gallery">GALLERY</string>
     <string name="photo">PHOTO</string>

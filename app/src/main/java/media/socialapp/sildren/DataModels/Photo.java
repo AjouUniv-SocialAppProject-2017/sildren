@@ -13,6 +13,16 @@ public class Photo implements Parcelable {
     private String photo_id;
     private String user_id;
     private String tags;
+    private String title;
+    private String location;
+    private String date;
+    private String startTime;
+    private String endTime;
+    private String recruit;
+    private String content;
+
+
+
     private List<Like> likes;
     private List<Comment> comments;
 
@@ -108,6 +118,62 @@ public class Photo implements Parcelable {
 
     public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getRecruit() {
+        return recruit;
+    }
+
+    public void setRecruit(String recruit) {
+        this.recruit = recruit;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override

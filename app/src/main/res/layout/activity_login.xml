@@ -6,6 +6,30 @@
     android:layout_height="match_parent"
     tools:context="media.socialapp.sildren.LoginActivity">
 
+    <ImageView
+        android:id="@+id/image_elders"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="84dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintRight_toLeftOf="@+id/image_kids"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/vecter_elders" />
+
+    <ImageView
+        android:id="@+id/image_kids"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginTop="84dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toRightOf="@+id/image_elders"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/vecter_kid" />
+
     <LinearLayout
         android:id="@+id/linear_signIn"
         android:layout_width="290dp"
@@ -97,5 +121,7 @@
             android:layout_height="50dp"
             android:layout_margin="10dp" />
     </LinearLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>

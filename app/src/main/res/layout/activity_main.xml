@@ -26,9 +26,10 @@
             android:id="@+id/relLayout1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true">
 
-            <include layout="@layout/snippet_sildren_appbar"/>
+            <include layout="@layout/snippet_sildren_appbar" />
 
         </RelativeLayout>
 

@@ -4,24 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/title_image"
     tools:context="media.socialapp.sildren.LoginActivity">
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SILDREN"
-        android:textAllCaps="false"
-        android:textColor="@android:color/holo_orange_light"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.207" />
 
     <LinearLayout
         android:id="@+id/linear_signIn"
@@ -37,8 +20,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.377">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.784">
 
         <LinearLayout
             android:id="@+id/linear_signIn_id"
@@ -95,7 +78,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Sign In"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:theme="@style/ThemeOverlay.MyDarkButton"/>
 
             <Button
                 android:id="@+id/btn_signUp"
@@ -103,7 +87,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Sign Up"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:theme="@style/ThemeOverlay.MyDarkButton"/>
         </LinearLayout>
 
         <com.google.android.gms.common.SignInButton

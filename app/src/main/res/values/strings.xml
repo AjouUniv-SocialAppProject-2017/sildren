@@ -26,6 +26,11 @@
     <string name="hint_start_time">시작</string>
     <string name="hint_end_time">종료</string>
 
+    <!-- activity names -->
+    <string name="main_activity">Home Activity</string>
+
+
+    <!-- button text-->
     <string name="get_custom_token">Get Token</string>
     <string name="sign_in">Sign In</string>
     <string name="create_account">Create Account</string>
@@ -37,6 +42,7 @@
     <string name="signed_in">Signed In</string>
     <string name="signed_out">Signed Out</string>
     <string name="token_null">Token: null</string>
+    <string name="info_btn">내용 자세히 보기</string>
 
     <string name="desc_firebase_lockup">Firebase logo and name</string>
     <string name="auth_failed">Authentication failed</string>
@@ -92,8 +98,17 @@
     <string name="field_tags">tags</string>
     <string name="field_image_path">image_path</string>
     <string name="field_comments">comments</string>
+    <string name="field_content">content</string>
+    <string name="field_date">date</string>
+    <string name="field_startTime">startTime</string>
+    <string name="field_endTime">endTime</string>
+    <string name="field_title">title</string>
+    <string name="field_location">location</string>
+    <string name="field_recruit">recruit</string>
+
 
     <string name="view_comments_fragment">View Comments</string>
+    <string name="view_info_fragment">View Info</string>
 </resources>
 
 

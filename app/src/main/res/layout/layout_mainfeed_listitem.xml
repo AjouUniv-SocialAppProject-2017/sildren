@@ -17,14 +17,13 @@
                 android:id="@+id/relLayout1">
 
 
-
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
+                    android:hint="@string/hint_title"
                     android:id="@+id/username"
                     android:textColor="@color/black"
                     />
@@ -78,7 +77,6 @@
                         android:layout_marginLeft="20dp"
                         android:src="@drawable/ic_heart_white"
                         android:visibility="visible"/>
-
                 </RelativeLayout>
 
                 <ImageView
@@ -90,6 +88,14 @@
                     android:src="@drawable/vector_comment"
                     android:visibility="visible"
                     android:layout_centerVertical="true"/>
+
+                <Button
+                    android:id="@+id/info_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_toRightOf="@+id/speech_bubble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/info_btn" />
 
             </RelativeLayout>
 
@@ -141,8 +147,6 @@
                     android:layout_marginTop="15dp"/>
 
             </RelativeLayout>
-
-
 
     </RelativeLayout>
 

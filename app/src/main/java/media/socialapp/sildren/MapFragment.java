@@ -15,6 +15,7 @@ import com.nhn.android.maps.NMapView;
 
 
 public class MapFragment extends Fragment {
+    private static final String TAG = "MapFragment";
     private NMapContext mMapContext;
     private static final String CLIENT_ID = "WASU1Lpw1zXoC3ROcGWo";// 애플리케이션 클라이언트 아이디 값
     @Override

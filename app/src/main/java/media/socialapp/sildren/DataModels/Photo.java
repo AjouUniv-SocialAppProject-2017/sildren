@@ -39,6 +39,13 @@ public class Photo implements Parcelable {
         photo_id = in.readString();
         user_id = in.readString();
         tags = in.readString();
+        content = in.readString();
+        date = in.readString();
+        startTime = in.readString();
+        endTime = in.readString();
+        title = in.readString();
+        location = in.readString();
+        recruit = in.readString();
     }
 
     @Override
@@ -49,6 +56,33 @@ public class Photo implements Parcelable {
         dest.writeString(photo_id);
         dest.writeString(user_id);
         dest.writeString(tags);
+        dest.writeString(content);
+        dest.writeString(date);
+        dest.writeString(startTime);
+        dest.writeString(endTime);
+        dest.writeString(title);
+        dest.writeString(location);
+        dest.writeString(recruit);
+    }
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "caption='" + caption + '\'' +
+                ", date_created='" + date_created + '\'' +
+                ", image_path='" + image_path + '\'' +
+                ", photo_id='" + photo_id + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", tags='" + tags + '\'' +
+                ", likes=" + likes +
+                ", content=" + content +
+                ", date=" + date +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", title=" + title +
+                ", location=" + location +
+                ", recruit=" + recruit +
+                '}';
     }
 
     @Override
@@ -176,16 +210,5 @@ public class Photo implements Parcelable {
         this.content = content;
     }
 
-    @Override
-    public String toString() {
-        return "Photo{" +
-                "caption='" + caption + '\'' +
-                ", date_created='" + date_created + '\'' +
-                ", image_path='" + image_path + '\'' +
-                ", photo_id='" + photo_id + '\'' +
-                ", user_id='" + user_id + '\'' +
-                ", tags='" + tags + '\'' +
-                ", likes=" + likes +
-                '}';
-    }
+
 }

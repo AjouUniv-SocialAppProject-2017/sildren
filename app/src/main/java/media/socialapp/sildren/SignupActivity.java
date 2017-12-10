@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import media.socialapp.sildren.DataModels.User;
+import media.socialapp.sildren.utilities.FirebaseMethods;
 
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
@@ -38,6 +39,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mBirthField;
 
     private FirebaseAuth mAuth;
+    private FirebaseMethods firebaseMethods;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,13 +54,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mPhoneNumberField = (EditText) findViewById(R.id.field_phone);
         mBirthField = (EditText) findViewById(R.id.field_birth);
 
-        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.verify_email_button).setOnClickListener(this);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference("user");
+        firebaseMethods = new FirebaseMethods(SignupActivity.this);
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -83,6 +85,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             addUserData(user, email, name, phoneNumber, birth);
+                            firebaseMethods.addNewUser(email, name, "",  "");
                             updateUI(user);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -179,7 +182,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         User user = new User();
         user.setUsername(name);
-        user.setUserSex(0);
         user.setUserKey(fbUser.getUid());
         user.setPhone_number(phoneNumber);
         user.setUserBirth(birth);
@@ -214,12 +216,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (i == R.id.email_create_account_button) {
             createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString(),
                     mNameField.getText().toString(), Long.parseLong(mPhoneNumberField.getText().toString()), mBirthField.getText().toString());
-        } else if (i == R.id.email_sign_in_button) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         } else if (i == R.id.sign_out_button) {
             signOut();
         } else if (i == R.id.verify_email_button) {
-            sendEmailVerification();
+            firebaseMethods.sendVerificationEmail();
         }
     }
 }

@@ -7,19 +7,21 @@ public class User implements Parcelable {
     private String userKey;
     private String user_id;
     private long phone_number;
-
-
     private String email;
     private String username;
     private String userPhotoUrl;
     private String userBirth;
-    private int userSex;
-    private String userResidence;
 
     public User() {
 
     }
 
+    public User(String user_id, long phone_number, String email, String username) {
+        this.user_id = user_id;
+        this.phone_number = phone_number;
+        this.email = email;
+        this.username = username;
+    }
 
     protected User(Parcel in) {
         user_id = in.readString();
@@ -77,10 +79,6 @@ public class User implements Parcelable {
     public void setUserPhotoUrl(String userPhotoUrl) { this.userPhotoUrl = userPhotoUrl; }
 
     public void setUserBirth(String userBirth) { this.userBirth = userBirth; }
-
-    public void setUserSex(int userSex) { this.userSex = userSex; }
-
-    public void setUserResidence(String userResidence) { this.userResidence = userResidence; }
 
     @Override
     public String toString() {

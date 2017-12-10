@@ -5,19 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +28,7 @@ import media.socialapp.sildren.utilities.UniversalImageLoader;
 public class MainActivity extends AppCompatActivity implements
         MainfeedListAdapter.OnLoadMoreItemsListener {
 
-    private static String TAG = "Main Activity";
+    private static String TAG = "MainActivity";
 
 
     private Context mContext = MainActivity.this;
@@ -40,6 +38,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private ViewPager mViewPager;
     private FrameLayout mFrameLayout;
+    private RelativeLayout mRelativeLayout;
+    private FragmentManager fragmentManager;
+    private FragmentTransaction transaction;
+
+    public static Bundle mBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +54,15 @@ public class MainActivity extends AppCompatActivity implements
 
         Log.d(TAG, "onCreate: starting.");
         mViewPager = (ViewPager) findViewById(R.id.viewpager_container);
-        mFrameLayout = (FrameLayout) findViewById(R.id.content);
-
+        mFrameLayout = (FrameLayout) findViewById(R.id.container);
+        mRelativeLayout = (RelativeLayout) findViewById(R.id.relLayoutParent);
 
         setupFirebaseAuth();
 
         initImageLoader();
         HomeFragment homeFragment = new HomeFragment();
         homeFragment.setArguments(new Bundle());
-        openFragment(homeFragment);
+        openFragmentByContent(homeFragment,null);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.navigation_home:
                     HomeFragment homeFragment = new HomeFragment();
                     homeFragment.setArguments(new Bundle());
-                    openFragment(homeFragment);
+                    openFragmentByContent(homeFragment,null);
                     return true;
                 case R.id.navigation_camera:
                     intent = new Intent(getApplicationContext(), PostActivity.class);
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements
                 case R.id.navigation_map:
                     MapFragment mapFragment = new MapFragment();
                     mapFragment.setArguments(new Bundle());
-                    openFragment(mapFragment);
+                    openFragmentByContent(mapFragment,null);
 
                     return true;
             }
@@ -95,20 +98,6 @@ public class MainActivity extends AppCompatActivity implements
 
     };
 
-    private void openFragment(final Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-    }
-
-
-    public void hideLayout() {
-        Log.d(TAG, "hideLayout: hiding layout");
-        mFrameLayout.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public void onLoadMoreItems() {
@@ -156,6 +145,76 @@ public class MainActivity extends AppCompatActivity implements
         };
     }
 
+
+    private void openFragmentByContent(final Fragment fragment ,String string ) {
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.content, fragment);
+        transaction.addToBackStack(string);
+        transaction.commit();
+    }
+
+    private void openFragmentByContainer( Fragment fragment,String string ) {
+        fragmentManager = getSupportFragmentManager();
+        fragment.setArguments(fragment.getArguments());
+        transaction = fragmentManager.beginTransaction();
+        transaction.add(R.id.container, fragment);
+        transaction.addToBackStack(string);
+        transaction.commit();
+        mBundle = fragment.getArguments();
+
+        Log.d(TAG, "openFragmentByContainer : " + fragment.getArguments());
+        hideLayout();
+    }
+
+    public void onCommentThreadSelected(Photo photo, String callingActivity) {
+        Log.d(TAG, "onCommentThreadSelected: selected a coemment thread");
+
+        ViewCommentsFragment fragment = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo), photo);
+        args.putString(getString(R.string.main_activity), getString(R.string.main_activity));
+        fragment.setArguments(args);
+
+        openFragmentByContainer(fragment, "HomeFragment" );
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.container, fragment);
+//        transaction.addToBackStack(getString(R.string.view_comments_fragment));
+//        transaction.commit();
+
+    }
+
+    public void onInfoSelected(Photo photo, String callingActivity) {
+        Log.d(TAG, "onCommentThreadSelected: selected a coemment thread");
+
+        ViewInfoFragment fragment = new ViewInfoFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo), photo);
+//        args.putString("HomeFragment", "HomeFragment");
+        fragment.setArguments(args);
+
+        Log.d(TAG,"Bundling args :" + photo);
+        Log.d(TAG,"Bundled args :" + args);
+
+        openFragmentByContainer(fragment, "HomeFragment");
+//        transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id.container, fragment);
+//        transaction.commit();
+
+    }
+
+    public void showLayout() {
+        Log.d(TAG, "hideLayout: showing layout");
+        mRelativeLayout.setVisibility(View.VISIBLE);
+        mFrameLayout.setVisibility(View.GONE);
+    }
+
+    public void hideLayout() {
+        Log.d(TAG, "hideLayout: hiding layout");
+        mRelativeLayout.setVisibility(View.GONE);
+        mFrameLayout.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -170,6 +229,15 @@ public class MainActivity extends AppCompatActivity implements
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(mFrameLayout.getVisibility() == View.VISIBLE){
+            showLayout();
+        }
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package media.socialapp.sildren.utilities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +32,7 @@ import java.util.TimeZone;
 
 
 import media.socialapp.sildren.DataModels.User;
+import media.socialapp.sildren.DataModels.UserAccountSettings;
 import media.socialapp.sildren.MainActivity;
 
 import media.socialapp.sildren.DataModels.Comment;
@@ -67,7 +70,9 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         TextView username, timeDetla, caption, likes, comments;
         SquareImageView image;
         ImageView heartRed, heartWhite, comment;
+        Button info;
 
+        UserAccountSettings settings = new UserAccountSettings();
         User user  = new User();
         StringBuilder users;
         String mLikesString;
@@ -91,6 +96,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             holder.heartRed = (ImageView) convertView.findViewById(R.id.image_heart_red);
             holder.heartWhite = (ImageView) convertView.findViewById(R.id.image_heart);
             holder.comment = (ImageView) convertView.findViewById(R.id.speech_bubble);
+            holder.info = (Button) convertView.findViewById(R.id.info_btn);
             holder.likes = (TextView) convertView.findViewById(R.id.image_likes);
             holder.comments = (TextView) convertView.findViewById(R.id.image_comments_link);
             holder.caption = (TextView) convertView.findViewById(R.id.image_caption);
@@ -141,10 +147,43 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    currentUsername = singleSnapshot.getValue(UserAccountSettings.class).getUsername();
+
+                    Log.d(TAG, "onDataChange: found user: "
+                            + singleSnapshot.getValue(UserAccountSettings.class).getUsername());
+                    holder.username.setText(getItem(position).getTitle());
+//                    holder.username.setText(singleSnapshot.getValue(UserAccountSettings.class).getUsername());
+                    //여기에 프로파일 온클릭 인텐트
                     Log.d(TAG, "onDataChange: found user: " +
                     singleSnapshot.getValue(User.class).getUsername());
 
                     holder.user = singleSnapshot.getValue(User.class);
+
+                    holder.settings = singleSnapshot.getValue(UserAccountSettings.class);
+                    //댓글 온클릭 달기
+                    holder.comment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(TAG, "onCommentClick" );
+                                    ((MainActivity)mContext).onCommentThreadSelected(getItem(position),
+                                    mContext.getString(R.string.main_activity));
+
+                            //another thing?
+                            ((MainActivity)mContext).hideLayout();
+                        }
+                    });
+
+                    holder.info.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(TAG, "onInfoBtnClick" );
+                            ((MainActivity)mContext).onInfoSelected(getItem(position),
+                                    mContext.getString(R.string.main_activity));
+
+                            //another thing?
+                            ((MainActivity)mContext).hideLayout();
+                        }
+                    });
                 }
 
             }
@@ -209,7 +248,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
                         String keyID = singleSnapshot.getKey();
 
-                        //case1: Then user already liked the photo
+                        //유저가 이미 좋아요한 경우
                         if(mHolder.likeByCurrentUser &&
                                 singleSnapshot.getValue(Like.class).getUser_id()
                                         .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
@@ -230,7 +269,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                             mHolder.heart.toggleLike();
                             getLikesString(mHolder);
                         }
-                        //case2: The user has not liked the photo
+                        //유저가 좋아요를 아직 안한 경우
                         else if(!mHolder.likeByCurrentUser){
                             //add new like
                             addNewLike(mHolder);
@@ -247,6 +286,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
+
             });
 
             return true;

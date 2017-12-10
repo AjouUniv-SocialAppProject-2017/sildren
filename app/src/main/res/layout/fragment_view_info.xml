@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/white_grey_border_bottom"
+    android:orientation="vertical"
     tools:context="media.socialapp.sildren.MainActivity">
 
-
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/layoutParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/container">
+        android:orientation="vertical">
 
-    </FrameLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/relLayoutParent">
-
-
-        <!-- top toolbar -->
         <RelativeLayout
-            android:id="@+id/relLayout1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentTop="true">
@@ -32,24 +24,17 @@
 
         </RelativeLayout>
 
-        <!-- Middle section (body) -->
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/relLayout1"
-            android:layout_above="@+id/navigation">
+            android:layout_weight="1">
 
-            <include layout="@layout/layout_center_viewpager"/>
+            <include layout="@layout/snippet_info"/>
 
+        </FrameLayout>
 
-        </RelativeLayout>
-
-        <!-- bottom navigation -->
         <include layout="@layout/snippet_navigation_bar"/>
 
-
-    </RelativeLayout>
-
-
-</android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
+</LinearLayout>

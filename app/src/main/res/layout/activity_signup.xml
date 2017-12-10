@@ -9,17 +9,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="66dp"
         android:layout_weight="2"
+        android:background="@color/white"
+        android:clipToPadding="false"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
-            android:text="@string/emailpassword_title_text"
+            android:text="계정 생성"
             android:theme="@style/ThemeOverlay.MyTitleText" />
 
         <TextView
@@ -33,7 +36,6 @@
             tools:text="Firebase User ID: 123456789abc" />
 
 
-
     </LinearLayout>
 
 
@@ -41,7 +43,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
-        android:background="@color/grey_300"
+        android:background="@color/white"
         android:gravity="center_vertical">
 
         <LinearLayout
@@ -97,7 +99,6 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:id="@+id/email_password_buttons"
             android:layout_width="fill_parent"
@@ -106,22 +107,16 @@
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:weightSum="2.0">
-
-            <Button
-                android:id="@+id/email_sign_in_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/sign_in"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
+            android:weightSum="1.0">
 
             <Button
                 android:id="@+id/email_create_account_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/create_account"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="계정 만들기"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
         </LinearLayout>
 

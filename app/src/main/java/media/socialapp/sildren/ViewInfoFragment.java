@@ -207,6 +207,7 @@ public class ViewInfoFragment extends Fragment {
                     iterations = 10;
                 }
 
+
                 mResults = 10;
                 for (int i = 0; i < iterations; i++) {
                     mPaginatedPhotos.add(mPhotos.get(i));

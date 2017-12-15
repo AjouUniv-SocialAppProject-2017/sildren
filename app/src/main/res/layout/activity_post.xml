@@ -41,7 +41,7 @@
                 android:layout_alignParentBottom="true">
 
 
-                <!--
+
                 <android.support.design.widget.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -56,8 +56,9 @@
                     </android.support.design.widget.TabLayout>
 
                 </android.support.design.widget.AppBarLayout>
-                -->
 
+
+                <!--
                 <Button
                     android:id="@+id/galleryButton"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
@@ -81,6 +82,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/white_rounded_button"
                     android:text="@string/title_camera" />
+
+                    -->
             </LinearLayout>
 
         </RelativeLayout>

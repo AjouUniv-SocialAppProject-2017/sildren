@@ -58,34 +58,8 @@
                 </android.support.design.widget.AppBarLayout>
 
 
-                <!--
-                <Button
-                    android:id="@+id/galleryButton"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_rounded_button"
-                    android:text="갤러리" />
 
-                <Button
-                    android:id="@+id/cameraButton"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="25dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/white_rounded_button"
-                    android:text="@string/title_camera" />
-
-                    -->
             </LinearLayout>
-
         </RelativeLayout>
 
 

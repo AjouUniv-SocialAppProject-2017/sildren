@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mNameField;
     private EditText mPhoneNumberField;
     private EditText mBirthField;
+    private RadioButton type0radioBtn;
+    private RadioButton type1radioBtn;
 
     private FirebaseAuth mAuth;
     private FirebaseMethods firebaseMethods;
@@ -53,6 +56,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mNameField = (EditText) findViewById(R.id.field_name);
         mPhoneNumberField = (EditText) findViewById(R.id.field_phone);
         mBirthField = (EditText) findViewById(R.id.field_birth);
+        //type0radioBtn = findViewById(R.id.)
+       // type1radioBtn
 
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);

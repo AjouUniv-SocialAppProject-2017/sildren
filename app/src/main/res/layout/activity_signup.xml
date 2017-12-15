@@ -55,6 +55,29 @@
             android:paddingRight="16dp"
             android:weightSum="5">
 
+
+
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/user_type0_radio_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="일반회원" />
+
+                <RadioButton
+                    android:id="@+id/user_type1_radio_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="보육원" />
+            </RadioGroup>
+
+
             <EditText
                 android:id="@+id/field_email"
                 android:layout_width="match_parent"

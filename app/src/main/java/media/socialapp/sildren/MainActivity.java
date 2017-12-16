@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements
                     startActivity(intent);
                     return true;
                 case R.id.navigation_dashboard:
-                    intent = new Intent(getApplicationContext(), ChatActivity.class);
+//                    intent = new Intent(getApplicationContext(), ChatActivity.class);
+                    intent = new Intent(getApplicationContext(), ChatGroupActivity.class);
                     startActivity(intent);
                     return true;
                 case R.id.navigation_map:

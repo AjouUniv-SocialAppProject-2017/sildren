@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="media.socialapp.sildren.ChatActivity"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,35 +32,51 @@
         </android.support.design.widget.AppBarLayout>
 
     </RelativeLayout>
+
     <ListView
         android:id="@+id/list_message"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:dividerHeight="0px"
+        android:divider="#ffffff" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:orientation="horizontal">
+        android:padding="8dp"
+        android:minHeight="36dp"
+        android:background="@drawable/send_contents_container">
 
-        <EditText
-            android:id="@+id/edit_message"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:paddingLeft="15dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_send"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="전송"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button" />
+            <EditText
+                android:id="@+id/edit_message"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:paddingLeft="15dp"
+                android:background="@drawable/message_edittext"/>
 
-    </LinearLayout>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_send"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="전송"
+                android:layout_gravity="center_vertical"
+                android:textSize="18sp"
+                android:textColor="@color/textEnabled"
+                android:textStyle="bold"
+                android:background="@drawable/entered_button"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button" />
 
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

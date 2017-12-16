@@ -1,11 +1,14 @@
 package media.socialapp.sildren;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +24,7 @@ import media.socialapp.sildren.DataModels.ChatGroup;
 import media.socialapp.sildren.utilities.OnGroupChangedListener;
 
 public class ChatGroupActivity extends AppCompatActivity {
+    private static final String TAG = "ChatGroupActivity";
 
     ChatGroup chatGroup;
     private FirebaseUser fbUser;
@@ -69,6 +73,30 @@ public class ChatGroupActivity extends AppCompatActivity {
                 return chatGroup.getSize();
             }
         });
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener()
+        {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e)
+            {
+                Log.d(TAG,"onInterceptTouchEvent");
+                Intent intent = new Intent(ChatGroupActivity.this, ChatActivity.class);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+                Log.d(TAG,"onTouchEvent");
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+
 
         chatGroup.setOnGroupChangedListener(new OnGroupChangedListener() {
             @Override

@@ -57,7 +57,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mPhoneNumberField = (EditText) findViewById(R.id.field_phone);
         mBirthField = (EditText) findViewById(R.id.field_birth);
         //type0radioBtn = findViewById(R.id.)
-       // type1radioBtn
+        // type1radioBtn
 
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -85,12 +85,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete( Task<AuthResult> task) {
+                    public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             addUserData(user, email, name, phoneNumber, birth);
-                            firebaseMethods.addNewUser(email, name, "",  "");
+                            firebaseMethods.addNewUser(email, name, "", "");
                             updateUI(user);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -111,7 +111,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete( Task<AuthResult> task) {
+                    public void onComplete(Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -126,8 +126,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (!task.isSuccessful()) {
                             mStatusTextView.setText(R.string.auth_failed);
                         }
-                    }
-                });
+                    }});
+
 
     }
 
@@ -143,7 +143,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete( Task<Void> task) {
+                    public void onComplete(Task<Void> task) {
                         // Re-enable button
                         findViewById(R.id.verify_email_button).setEnabled(true);
 

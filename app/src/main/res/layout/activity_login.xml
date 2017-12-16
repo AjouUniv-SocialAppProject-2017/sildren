@@ -22,7 +22,7 @@
         android:id="@+id/image_kids"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="92dp"
+        android:layout_marginEnd="96dp"
         android:layout_marginTop="84dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -84,7 +84,7 @@
                 android:background="@color/white"
                 android:ems="10"
                 android:hint="PASSWORD"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:padding="15dp" />
         </LinearLayout>
 

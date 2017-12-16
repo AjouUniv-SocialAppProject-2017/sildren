@@ -11,4 +11,16 @@
     <color name="black">#000000</color>
     <color name="link_blue">#4d94ff</color>
     <color name="darkRed">#cc0000</color>
+
+    <color name="colorEnabled">#FEEB34</color>
+    <color name="colorDisabled">#F9F9F9</color>
+
+    <color name="lineLight">#E9E9E9</color>
+    <color name="lineDefault">#89A8BC</color>
+    <color name="lineDark">#7797AB</color>
+
+    <color name="textHint">#D7D7D7</color>
+    <color name="textDefault">#000000</color>
+    <color name="textEnabled">#523738</color>
+    <color name="textDisabled">#D7D7D7</color>
 </resources>

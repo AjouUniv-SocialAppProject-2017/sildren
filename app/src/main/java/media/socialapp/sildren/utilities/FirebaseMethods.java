@@ -193,7 +193,8 @@ public class FirebaseMethods {
 
 
         //add chat group
-        myRef.child("chat_groups").child(title).setValue(title);
+        myRef.child("chat_groups").child(title).child("in_group_users").setValue((FirebaseAuth.getInstance().getCurrentUser()
+                .getUid()));
     }
 
     public int getImageCount(DataSnapshot dataSnapshot) {

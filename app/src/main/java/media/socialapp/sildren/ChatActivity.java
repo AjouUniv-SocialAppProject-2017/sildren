@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -56,14 +59,20 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private ListView mListView;
     private EditText mEdtMessage;
+    private AppCompatButton sendBtn;
 
     private ChatAdapter mAdapter;
     private String userName;
+
+    int enableTextColor;
+    int disableTextColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        sendBtn = (AppCompatButton) findViewById(R.id.btn_send);
+        Log.d(TAG,"sendBtn" + sendBtn);
         initViews();
         initFirebaseDatabase();
         initFirebaseAuth();
@@ -76,8 +85,32 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         mListView.setAdapter(mAdapter);
 
         mEdtMessage = (EditText) findViewById(R.id.edit_message);
+
         findViewById(R.id.btn_send).setOnClickListener(this);
 
+        enableTextColor = R.color.colorEnabled;
+        disableTextColor = R.color.colorDisabled;
+
+        sendBtn.setEnabled(false);
+        sendBtn.setTextColor(disableTextColor);
+        mEdtMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 0) {
+                    sendBtn.setEnabled(true);
+                    sendBtn.setTextColor(enableTextColor);
+                } else {
+                    sendBtn.setEnabled(false);
+                    sendBtn.setTextColor(disableTextColor);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
     }
 
     private void initFirebaseDatabase() {
@@ -235,6 +268,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     if (mAuth.getCurrentUser().getPhotoUrl() != null)
                         chatData.userPhotoUrl = mAuth.getCurrentUser().getPhotoUrl().toString();
                     mDatabaseReference.push().setValue(chatData);
+
                 }
                 break;
             case R.id.btn_google_signin:

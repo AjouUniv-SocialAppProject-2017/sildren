@@ -191,6 +191,9 @@ public class FirebaseMethods {
                         .getUid()).child(newPhotoKey).setValue(photo);
         myRef.child(mContext.getString(R.string.dbname_photos)).child(newPhotoKey).setValue(photo);
 
+
+        //add chat group
+        myRef.child("chat_groups").child(title).setValue(title);
     }
 
     public int getImageCount(DataSnapshot dataSnapshot) {

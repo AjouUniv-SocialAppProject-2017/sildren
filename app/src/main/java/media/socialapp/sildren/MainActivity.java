@@ -88,10 +88,12 @@ public class MainActivity extends AppCompatActivity implements
                     startActivity(intent);
                     return true;
                 case R.id.navigation_map:
-                    MapFragment mapFragment = new MapFragment();
-                    mapFragment.setArguments(new Bundle());
-                    openFragmentByContent(mapFragment,null);
+//                    MapFragment mapFragment = new MapFragment();
+//                    mapFragment.setArguments(new Bundle());
+//                    openFragmentByContent(mapFragment,null);
 
+                    intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    startActivity(intent);
                     return true;
             }
             return false;

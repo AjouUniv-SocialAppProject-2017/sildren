@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,9 +41,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mBirthField;
     private RadioButton type0radioBtn;
     private RadioButton type1radioBtn;
+    private RadioGroup radioGroup;
+    private int userType;
 
     private FirebaseAuth mAuth;
     private FirebaseMethods firebaseMethods;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,8 +60,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mNameField = (EditText) findViewById(R.id.field_name);
         mPhoneNumberField = (EditText) findViewById(R.id.field_phone);
         mBirthField = (EditText) findViewById(R.id.field_birth);
-        //type0radioBtn = findViewById(R.id.)
-        // type1radioBtn
+        type0radioBtn = (RadioButton) findViewById(R.id.user_type0_radio_btn);
+        type1radioBtn = (RadioButton) findViewById(R.id.user_type1_radio_btn);
+        radioGroup = (RadioGroup) findViewById(R.id.radio_group);
 
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -69,6 +74,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         mAuth = FirebaseAuth.getInstance();
     }
+
 
     @Override
     public void onStart() {
@@ -126,7 +132,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (!task.isSuccessful()) {
                             mStatusTextView.setText(R.string.auth_failed);
                         }
-                    }});
+                    }
+                });
 
 
     }
@@ -225,6 +232,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             signOut();
         } else if (i == R.id.verify_email_button) {
             firebaseMethods.sendVerificationEmail();
+        } else if (i == R.id.user_type0_radio_btn) {
+            userType = 0;
+        } else if (i == R.id.user_type1_radio_btn) {
+            userType = 1;
         }
     }
 }

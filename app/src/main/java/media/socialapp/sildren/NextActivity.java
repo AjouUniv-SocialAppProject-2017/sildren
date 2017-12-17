@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -50,6 +51,7 @@ public class NextActivity extends AppCompatActivity {
     private EditText mLocation;
     private EditText mRecruit;
     private EditText mContent;
+    private ImageButton locationBtn;
 
     private String mAppend = "file:/";
     private int imageCount = 0;
@@ -73,6 +75,7 @@ public class NextActivity extends AppCompatActivity {
         mEndTime = (EditText) findViewById(R.id.field_end_time);
         mRecruit = (EditText) findViewById(R.id.field_recruit);
         mContent = (EditText) findViewById(R.id.field_content);
+        locationBtn = (ImageButton) findViewById(R.id.info_location_button);
 
         calendar = Calendar.getInstance();
 
@@ -184,7 +187,13 @@ public class NextActivity extends AppCompatActivity {
                         , true).show();
             }
         });
-
+        locationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                startActivity(intent);
+            }
+        });
         setImage();
     }
 

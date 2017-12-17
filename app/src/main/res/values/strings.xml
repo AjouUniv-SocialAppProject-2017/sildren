@@ -109,6 +109,12 @@
 
     <string name="view_comments_fragment">View Comments</string>
     <string name="view_info_fragment">View Info</string>
+
+    <string name="map_type_none">None</string>
+    <string name="map_type_normal">Normal</string>
+    <string name="map_type_terrain">Terrain</string>
+    <string name="map_type_satellite">Satellite</string>
+    <string name="map_type_hybrid">Hybrid</string>
 </resources>
 
 

@@ -5,10 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +15,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import media.socialapp.sildren.DataModels.ChatGroup;
@@ -26,8 +24,9 @@ import media.socialapp.sildren.utilities.OnGroupChangedListener;
 public class ChatGroupActivity extends AppCompatActivity {
     private static final String TAG = "ChatGroupActivity";
 
-    ChatGroup chatGroup;
+    private ChatGroup chatGroup;
     private FirebaseUser fbUser;
+    private List<String> groupNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class ChatGroupActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         chatGroup = new ChatGroup();
+        groupNames = new ArrayList<>();
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.chatList_recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
@@ -46,12 +46,12 @@ public class ChatGroupActivity extends AppCompatActivity {
             @Override
             public ChatGroupHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                View view = layoutInflater.inflate(R.layout.item_chat, parent, false);
+                View view = layoutInflater.inflate(R.layout.item_chat_group, parent, false);
                 return new ChatGroupHolder(view);
             }
 
             @Override
-            public void onBindViewHolder(ChatGroupHolder holder, int position) {
+            public void onBindViewHolder(final ChatGroupHolder holder, int position) {
                 String groupName = chatGroup.getGroup(position);
 //                String message = cmodel.getMessage(position);
 //                String timestamp = cmodel.getTimestamp(position);
@@ -65,6 +65,14 @@ public class ChatGroupActivity extends AppCompatActivity {
                 holder.setText(groupName);
 //                String imageUrl = cmodel.getImageURL(position);
 //                holder.setImage(imageUrl);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ChatGroupActivity.this, ChatActivity.class);
+                        intent.putExtra("chat_group", holder.getGroupName());
+                        startActivity(intent);
+                    }
+                });
 
             }
 
@@ -73,29 +81,37 @@ public class ChatGroupActivity extends AppCompatActivity {
                 return chatGroup.getSize();
             }
         });
-
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener()
-        {
+        chatGroup.setOnGroupChangedListener(new OnGroupChangedListener() {
             @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e)
-            {
-                Log.d(TAG,"onInterceptTouchEvent");
-                Intent intent = new Intent(ChatGroupActivity.this, ChatActivity.class);
-                startActivity(intent);
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-                Log.d(TAG,"onTouchEvent");
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
+            public void onDataChanged(List<String> groups) {
+                groupNames = groups;
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
+
+//        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener()
+//        {
+//            @Override
+//            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e)
+//            {
+//                Log.d(TAG,"onInterceptTouchEvent");
+//                Intent intent = new Intent(ChatGroupActivity.this, ChatActivity.class);
+//                intent.putExtra("chat_group", holder.getGroupName());
+//                startActivity(intent);
+//                return false;
+//            }
+//
+//            @Override
+//            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+//                Log.d(TAG,"onTouchEvent");
+//
+//            }
+//
+//            @Override
+//            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+//
+//            }
+//        });
 
 
         chatGroup.setOnGroupChangedListener(new OnGroupChangedListener() {
@@ -137,6 +153,10 @@ public class ChatGroupActivity extends AppCompatActivity {
 //            textView.setBackground(getBaseContext().getResources().getDrawable(R.drawable.bg_msg_from));
 //            timestampView.setText(timestamp);
         }
+        public String getGroupName() {
+            return titleView.getText().toString();
+        }
+    }
 
 //        public void setTextRight(String user, String text, String timestamp) {
 //            layout.setGravity(Gravity.RIGHT);
@@ -156,6 +176,5 @@ public class ChatGroupActivity extends AppCompatActivity {
 //                        .load(imageUrl)
 //                        .into(imageView);
 //            }
-    }
 
 }

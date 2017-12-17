@@ -58,7 +58,7 @@
                 android:weightSum="9">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:paddingRight="5dp"
@@ -80,7 +80,7 @@
                 android:weightSum="9">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="@string/hint_location"
@@ -89,10 +89,18 @@
 
                 <EditText
                     android:id="@+id/field_location"
-                    android:layout_width="match_parent"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="text" />
+
+                <ImageButton
+                    android:id="@+id/info_location_button"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/vector_map"
+                    android:layout_gravity="end"/>
             </LinearLayout>
 
             <LinearLayout

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import media.socialapp.sildren.utilities.Permissions;
 import media.socialapp.sildren.utilities.SectionsPagerAdapter;
@@ -26,6 +27,7 @@ public class PostActivity extends AppCompatActivity {
 
     private Button galleryBtn;
     private Button cameraBtn;
+
 
 
     @Override

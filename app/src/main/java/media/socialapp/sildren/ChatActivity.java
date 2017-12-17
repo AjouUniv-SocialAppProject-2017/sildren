@@ -63,6 +63,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private ChatAdapter mAdapter;
     private String userName;
+    private String chatGroupName;
 
     int enableTextColor;
     int disableTextColor;
@@ -80,12 +81,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        chatGroupName = getIntent().getStringExtra("chat_group");
         mListView = (ListView) findViewById(R.id.list_message);
         mAdapter = new ChatAdapter(this, 0);
         mListView.setAdapter(mAdapter);
 
         mEdtMessage = (EditText) findViewById(R.id.edit_message);
-
+        TextView appBarTitle = (TextView) findViewById(R.id.appbar_title);
+        appBarTitle.setText(chatGroupName);
         findViewById(R.id.btn_send).setOnClickListener(this);
 
         enableTextColor = R.color.colorEnabled;

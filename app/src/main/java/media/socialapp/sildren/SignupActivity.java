@@ -42,11 +42,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private RadioButton type0radioBtn;
     private RadioButton type1radioBtn;
     private RadioGroup radioGroup;
-    private int userType;
 
     private FirebaseAuth mAuth;
     private FirebaseMethods firebaseMethods;
-
+    private int userType = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +59,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mNameField = (EditText) findViewById(R.id.field_name);
         mPhoneNumberField = (EditText) findViewById(R.id.field_phone);
         mBirthField = (EditText) findViewById(R.id.field_birth);
-        type0radioBtn = (RadioButton) findViewById(R.id.user_type0_radio_btn);
-        type1radioBtn = (RadioButton) findViewById(R.id.user_type1_radio_btn);
+        type0radioBtn = (RadioButton) findViewById(R.id.user_type1_radio_btn);
+        type1radioBtn = (RadioButton) findViewById(R.id.user_type0_radio_btn);
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
 
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
@@ -73,8 +72,22 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         firebaseMethods = new FirebaseMethods(SignupActivity.this);
 
         mAuth = FirebaseAuth.getInstance();
-    }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.user_type0_radio_btn:
+                        Log.d(TAG,"userType - 1");
+                        userType = 0;
+                        break;
+                    case R.id.user_type1_radio_btn:
+                        Log.d(TAG,"userType - 2");
+                        userType = 1;
+                        break;
+                }
+            }
+        });
 
+    }
 
     @Override
     public void onStart() {
@@ -95,8 +108,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            addUserData(user, email, name, phoneNumber, birth);
-                            firebaseMethods.addNewUser(email, name, "", "");
+//                            addUserData(user, email, name, phoneNumber, birth);
+                            firebaseMethods.addNewUser(phoneNumber, email, name, userType,
+                                    birth,"", "");
                             updateUI(user);
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -134,7 +148,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     }
                 });
-
 
     }
 
@@ -232,10 +245,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             signOut();
         } else if (i == R.id.verify_email_button) {
             firebaseMethods.sendVerificationEmail();
-        } else if (i == R.id.user_type0_radio_btn) {
-            userType = 0;
-        } else if (i == R.id.user_type1_radio_btn) {
-            userType = 1;
         }
     }
 }

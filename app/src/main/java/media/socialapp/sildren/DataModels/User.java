@@ -11,16 +11,19 @@ public class User implements Parcelable {
     private String username;
     private String userPhotoUrl;
     private String userBirth;
+    private int userType;
 
     public User() {
 
     }
 
-    public User(String user_id, long phone_number, String email, String username) {
+    public User(String user_id, long phone_number, String email, String username, int userType, String birth) {
         this.user_id = user_id;
         this.phone_number = phone_number;
         this.email = email;
         this.username = username;
+        this.userType = userType;
+        this.userBirth = birth;
     }
 
     protected User(Parcel in) {
@@ -77,6 +80,14 @@ public class User implements Parcelable {
     public void setUserKey(String userKey) { this.userKey = userKey; }
 
     public void setUserPhotoUrl(String userPhotoUrl) { this.userPhotoUrl = userPhotoUrl; }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
 
     public void setUserBirth(String userBirth) { this.userBirth = userBirth; }
 

@@ -7,4 +7,6 @@ public class ChatData {
     public String userEmail;
     public String message;
     public long time;
+
+
 }

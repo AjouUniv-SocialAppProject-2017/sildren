@@ -101,7 +101,6 @@ public class HomeFragment extends Fragment {
 
                         Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
 
-
                         photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
                         if(objectMap.get(getString(R.string.field_tags)) != null)
                         photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());

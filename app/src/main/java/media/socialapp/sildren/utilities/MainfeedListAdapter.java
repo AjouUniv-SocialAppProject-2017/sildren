@@ -71,6 +71,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         SquareImageView image;
         ImageView heartRed, heartWhite, comment;
         Button info;
+        Button participateBtn;
 
         UserAccountSettings settings = new UserAccountSettings();
         User user  = new User();
@@ -97,6 +98,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             holder.heartWhite = (ImageView) convertView.findViewById(R.id.image_heart);
             holder.comment = (ImageView) convertView.findViewById(R.id.speech_bubble);
             holder.info = (Button) convertView.findViewById(R.id.info_btn);
+            holder.participateBtn= (Button) convertView.findViewById(R.id.participate_btn);
             holder.likes = (TextView) convertView.findViewById(R.id.image_likes);
             holder.comments = (TextView) convertView.findViewById(R.id.image_comments_link);
             holder.caption = (TextView) convertView.findViewById(R.id.image_caption);
@@ -182,6 +184,14 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
                             //another thing?
                             ((MainActivity)mContext).hideLayout();
+                        }
+                    });
+                    holder.participateBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Log.d(TAG, "onParticipateBtnClick" );
+                            ((MainActivity)mContext).onParticipatesClicked(getItem(position));
                         }
                     });
                 }

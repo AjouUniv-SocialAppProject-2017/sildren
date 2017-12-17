@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import media.socialapp.sildren.DataModels.Comment;
+import media.socialapp.sildren.DataModels.MarkerItem;
 import media.socialapp.sildren.DataModels.Photo;
 import media.socialapp.sildren.utilities.FirebaseMethods;
 import media.socialapp.sildren.utilities.MainfeedListAdapter;
@@ -53,6 +54,7 @@ public class ViewInfoFragment extends Fragment {
     private EditText mLocation;
     private EditText mRecruit;
     private EditText mContent;
+
 
     private Photo selectedPhoto;
 
@@ -126,6 +128,14 @@ public class ViewInfoFragment extends Fragment {
                 mFollowing.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 //get the photos
                 getPhotos();
+
+
+
+
+
+
+
+
             }
 
             @Override

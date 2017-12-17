@@ -56,17 +56,19 @@
             android:weightSum="5">
 
 
-
             <RadioGroup
                 android:id="@+id/radio_group"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/user_type0_radio_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:text="일반회원" />
 
@@ -74,6 +76,7 @@
                     android:id="@+id/user_type1_radio_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:text="보육원" />
             </RadioGroup>

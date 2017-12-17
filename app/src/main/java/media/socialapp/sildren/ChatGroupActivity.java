@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class ChatGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_group);
         FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.d(TAG, "intiated");
 
         chatGroup = new ChatGroup();
         groupNames = new ArrayList<>();
@@ -53,7 +56,8 @@ public class ChatGroupActivity extends AppCompatActivity {
             @Override
             public void onBindViewHolder(final ChatGroupHolder holder, int position) {
                 String groupName = chatGroup.getGroup(position);
-//                String message = cmodel.getMessage(position);
+                String photoUrl = chatGroup.getGroupPhoto(position);
+                //                String message = cmodel.getMessage(position);
 //                String timestamp = cmodel.getTimestamp(position);
 
 //                if (umodel.getUserId().equals(cmodel.getUserId(position))) {
@@ -62,7 +66,7 @@ public class ChatGroupActivity extends AppCompatActivity {
 //
 //                }
 
-                holder.setText(groupName);
+                holder.setText(groupName, photoUrl);
 //                String imageUrl = cmodel.getImageURL(position);
 //                holder.setImage(imageUrl);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +85,7 @@ public class ChatGroupActivity extends AppCompatActivity {
                 return chatGroup.getSize();
             }
         });
+
         chatGroup.setOnGroupChangedListener(new OnGroupChangedListener() {
             @Override
             public void onDataChanged(List<String> groups) {
@@ -140,23 +145,26 @@ public class ChatGroupActivity extends AppCompatActivity {
 
             titleView = (TextView) itemView.findViewById(R.id.chatgroup_name_textview);
 //            textView = (TextView) itemView.findViewById(R.id.chat_text_view);
-//            imageView = (ImageView) itemView.findViewById(R.id.chat_image_view);
+            imageView = (ImageView) itemView.findViewById(R.id.chat_group_profile);
 //            timestampView = (TextView) itemView.findViewById(R.id.chat_timestamp_view);
 //            layout = itemView.findViewById(R.id.);
         }
 
-        public void setText(String title) {
+        public void setText(String title, String photoUrl) {
 //            layout.setGravity(Gravity.LEFT);
-
+            final ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(photoUrl, imageView);
             titleView.setText(title);
 //            textView.setText(text);
 //            textView.setBackground(getBaseContext().getResources().getDrawable(R.drawable.bg_msg_from));
 //            timestampView.setText(timestamp);
         }
+
         public String getGroupName() {
             return titleView.getText().toString();
         }
     }
+
 
 //        public void setTextRight(String user, String text, String timestamp) {
 //            layout.setGravity(Gravity.RIGHT);
@@ -167,7 +175,7 @@ public class ChatGroupActivity extends AppCompatActivity {
 //            timestampView.setText(timestamp);
 //        }
 
-        // 공통성과 가변성의 분리 - 변하는 것과 변하지 않는 것은 분리되어야 한다.
+    // 공통성과 가변성의 분리 - 변하는 것과 변하지 않는 것은 분리되어야 한다.
 //            public void setImage(String imageUrl) {
 //                int visibility = imageUrl.isEmpty() ? View.GONE : View.VISIBLE;
 //                imageView.setVisibility(visibility);

@@ -1,6 +1,5 @@
 package media.socialapp.sildren;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -9,7 +8,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +27,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -39,10 +39,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+import media.socialapp.sildren.DataModels.MarkerItem;
+import media.socialapp.sildren.utilities.OnMarkerSetListener;
+import media.socialapp.sildren.utilities.Permissions;
 
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    private static final int VERIFY_PERMISSIONS_REQUEST = 1;
+    private static final String TAG = "MapsActivity";
+    private static final String EXTRA = "NextActivity";
     GoogleMap mGoogleMap;
     GoogleApiClient mGoogleApiClient;
+    public static MarkerItem markerItem = new MarkerItem();
+    private OnMarkerSetListener onMarkerSetListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             // No Google Maps Layout
         }
+
     }
 
     private void initMap() {
@@ -81,7 +90,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleMap = googleMap;
 
 
-        if(mGoogleMap != null){
+        if (mGoogleMap != null) {
 
 
             mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -121,13 +130,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     marker.setTitle(add.getLocality());
                     marker.showInfoWindow();
 
+                }
+            });
 
-
+            mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    Log.d(TAG, "onMarkerClick");
+                    double mLat = marker.getPosition().latitude;
+                    double mLng = marker.getPosition().longitude;
+                    markerItem = new MarkerItem();
+                    markerItem.setMarker(marker);
+                    if (EXTRA == getIntent().getStringExtra(EXTRA)) {
+                        finish();
+                    }
+                    return false;
                 }
             });
 
 
-            mGoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter(){
+            mGoogleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
 
                 @Override
                 public View getInfoWindow(Marker marker) {
@@ -157,6 +179,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         goToLocationZoom(39.008224, -76.8984527, 15);
 
+
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //                // TODO: Consider calling
@@ -169,14 +192,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                return;
 //            }
 //        }
-//        mGoogleMap.setMyLocationEnabled(true);
 
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addApi(LocationServices.API)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .build();
-//        mGoogleApiClient.connect();
+        if (checkPermissionsArray(Permissions.PERMISSIONS)) {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            mGoogleMap.setMyLocationEnabled(true);
+        }else{
+            verifyPermissions(Permissions.PERMISSIONS);
+        }
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
 
 
     }
@@ -289,6 +327,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+//    private void getDeviceLocation() {
+//    /*
+//     * Before getting the device location, you must check location
+//     * permission, as described earlier in the tutorial. Then:
+//     * Get the best and most recent location of the device, which may be
+//     * null in rare cases when a location is not available.
+//     */
+//        if (mLocationPermissionGranted) {
+//            mLastKnownLocation = LocationServices.FusedLocationApi
+//                    .getLastLocation(mGoogleApiClient);
+//        }
+//
+//        // Set the map's camera position to the current location of the device.
+//        if (mCameraPosition != null) {
+//            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
+//        } else if (mLastKnownLocation != null) {
+//            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+//                    new LatLng(mLastKnownLocation.getLatitude(),
+//                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+//        } else {
+//            Log.d(TAG, "Current location is null. Using defaults.");
+//            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+//            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+//        }
+//    }
 //    private void drawLine() {
 //
 //        PolylineOptions options = new PolylineOptions()
@@ -397,4 +460,40 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    public void verifyPermissions(String[] permissions){
+        Log.d(TAG, "verifyPermissions: verifying permissions.");
+
+        ActivityCompat.requestPermissions(
+                MapsActivity.this,
+                permissions,
+                VERIFY_PERMISSIONS_REQUEST
+        );
+    }
+
+    public boolean checkPermissionsArray(String[] permissions){
+        Log.d(TAG, "checkPermissionsArray: checking permissions array.");
+
+        for(int i = 0; i< permissions.length; i++){
+            String check = permissions[i];
+            if(!checkPermissions(check)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkPermissions(String permission){
+        Log.d(TAG, "checkPermissions: checking permission: " + permission);
+
+        int permissionRequest = ActivityCompat.checkSelfPermission(MapsActivity.this, permission);
+
+        if(permissionRequest != PackageManager.PERMISSION_GRANTED){
+            Log.d(TAG, "checkPermissions: \n Permission was not granted for: " + permission);
+            return false;
+        }
+        else{
+            Log.d(TAG, "checkPermissions: \n Permission was granted for: " + permission);
+            return true;
+        }
+    }
 }

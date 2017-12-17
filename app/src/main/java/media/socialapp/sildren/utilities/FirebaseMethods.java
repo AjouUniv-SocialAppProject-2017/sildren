@@ -193,8 +193,9 @@ public class FirebaseMethods {
 
 
         //add chat group
-        myRef.child("chat_groups").child(title).child("in_group_users").setValue((FirebaseAuth.getInstance().getCurrentUser()
-                .getUid()));
+//        myRef.child("chat_groups").child(title).child("in_group_users").setValue((FirebaseAuth.getInstance().getCurrentUser()
+//                .getUid()));
+//        myRef.child("chat_groups").child(title).setValue(url);
     }
 
     public int getImageCount(DataSnapshot dataSnapshot) {
@@ -208,9 +209,9 @@ public class FirebaseMethods {
         return count;
     }
 
-    public void addNewUser(String email, String username, String description, String profile_photo) {
-
-        User user = new User(userID, 1, email, username);
+    public void addNewUser(long phoneNumber, String email, String username, int userType, String birth, String description, String profile_photo) {
+        userID = mAuth.getCurrentUser().getUid();
+        User user = new User(userID, 1, email, username, userType, birth);
 
         myRef.child(mContext.getString(R.string.dbname_users))
                 .child(userID)

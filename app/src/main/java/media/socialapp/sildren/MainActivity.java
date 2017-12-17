@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import media.socialapp.sildren.DataModels.Photo;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private ViewPager mViewPager;
     private FrameLayout mFrameLayout;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
     private RelativeLayout mRelativeLayout;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
@@ -59,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements
 
         setupFirebaseAuth();
 
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
         initImageLoader();
         HomeFragment homeFragment = new HomeFragment();
         homeFragment.setArguments(new Bundle());
@@ -204,6 +210,17 @@ public class MainActivity extends AppCompatActivity implements
 //        transaction.add(R.id.container, fragment);
 //        transaction.commit();
 
+    }
+
+    public void onParticipatesClicked(Photo photo) {
+        String url = photo.getImage_path();
+        String title = photo.getTitle();
+//        String userID = mAuth.getCurrentUser().getUid();
+
+//        myRef.child(mContext.getString(R.string.dbname_users))
+//                .child(userID)
+//                .setValue(title);
+        myRef.child("chat_groups").child(title).setValue(url);
     }
 
     public void showLayout() {

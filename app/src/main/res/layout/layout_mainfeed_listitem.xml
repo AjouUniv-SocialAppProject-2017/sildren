@@ -54,6 +54,13 @@
                 android:layout_below="@+id/post_image"
                 android:background="@color/white">
 
+                <Button
+                    android:id="@+id/participate_btn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_checkmark" />
+
                 <RelativeLayout
                     android:layout_width="60dp"
                     android:layout_height="match_parent"

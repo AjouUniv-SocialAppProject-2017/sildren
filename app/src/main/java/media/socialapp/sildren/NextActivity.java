@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,14 +29,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
+import media.socialapp.sildren.DataModels.MarkerItem;
 import media.socialapp.sildren.utilities.FirebaseMethods;
+import media.socialapp.sildren.utilities.OnMarkerSetListener;
 import media.socialapp.sildren.utilities.UniversalImageLoader;
 
-public class NextActivity extends AppCompatActivity {
+public class NextActivity extends AppCompatActivity implements OnMarkerSetListener {
 
     private static final String TAG = "NextActivity";
 
@@ -59,7 +66,14 @@ public class NextActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private Intent intent;
     private Calendar calendar;
-
+    private MarkerItem markerItem;
+    private double latitude;
+    private double longitude;
+    private String str = "";
+    private List<Address> addressList;
+    private OnMarkerSetListener onMarkerSetListener;
+    private double mLat;
+    private double mLng;
 
 
     @Override
@@ -107,9 +121,10 @@ public class NextActivity extends AppCompatActivity {
                 String endTime = mEndTime.getText().toString();
                 String recruit = mRecruit.getText().toString();
                 String content = mContent.getText().toString();
+                String name = mAuth.getCurrentUser().getDisplayName();
 
-
-
+                MarkerItem markerItem = new MarkerItem(title, name, latitude, longitude);
+                myRef.child("markers").child("title").setValue(markerItem);
                 if (intent.hasExtra(getString(R.string.selected_image))) {
                     imgUrl = intent.getStringExtra(getString(R.string.selected_image));
                     mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, title,
@@ -190,7 +205,8 @@ public class NextActivity extends AppCompatActivity {
         locationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                intent.putExtra("Calling", TAG);
                 startActivity(intent);
             }
         });
@@ -272,7 +288,6 @@ public class NextActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -281,9 +296,71 @@ public class NextActivity extends AppCompatActivity {
 
     @Override
     public void onStop() {
+        Log.d(TAG, "onStop()");
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume()");
+
+
+        if (MapsActivity.markerItem.getMarker() != null) {
+            Marker marker = MapsActivity.markerItem.getMarker();
+            Log.d(TAG, "marker - " + marker);
+            latitude = marker.getPosition().latitude;
+            longitude = marker.getPosition().longitude;
+//                    LatLng latLng = new LatLng(latitude, longitude);
+            Geocoder geocoder = new Geocoder(getApplicationContext());
+            try {
+                addressList = geocoder.getFromLocation(latitude, longitude, 1);
+                str = addressList.get(0).getLocality() + ",";
+                str += addressList.get(0).getAddressLine(0);
+                mLocation.setText(str);
+                Log.d(TAG, "setLocation() str - " + str);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+//        setLocation();
+        super.onResume();
+
+    }
+
+    public void setLocation() {
+        Log.d(TAG, "setLocation()");
+        markerItem = new MarkerItem();
+
+        markerItem.setOnMarkerSetListener(new OnMarkerSetListener() {
+            @Override
+            public void onMarkerSet(Marker marker) {
+                Log.d(TAG, "setLocation() marker -" + marker);
+                if (marker != null) {
+//                    latitude = marker.getPosition().latitude;
+//                    longitude = marker.getPosition().longitude;
+////                    LatLng latLng = new LatLng(latitude, longitude);
+//                    Geocoder geocoder = new Geocoder(getApplicationContext());
+//                    try {
+//                        addressList = geocoder.getFromLocation(latitude, longitude, 1);
+//                        str = addressList.get(0).getLocality()+",";
+//                        str+=addressList.get(0).getAddressLine(0);
+//                        mLocation.setText(str);
+//                        Log.d(TAG,"setLocation() str - " + str);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onMarkerSet(Marker marker) {
+        Log.d(TAG, "onMarkerSet");
+        setLocation();
     }
 }

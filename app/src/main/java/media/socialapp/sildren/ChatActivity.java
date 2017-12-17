@@ -118,7 +118,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initFirebaseDatabase() {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference("message");
+        mDatabaseReference = mFirebaseDatabase.getReference("message").child(chatGroupName);
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

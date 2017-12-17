@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import media.socialapp.sildren.utilities.OnGroupChangedListener;
@@ -19,6 +20,9 @@ public class ChatGroup {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser user;
     private String userKey;
+    private List<String> groupNames = new ArrayList<>();
+    private List<String> groupPhoto = new ArrayList<>();
+
 
     //TODO.삭제.4
     public List<String> groupkeys = new ArrayList<>();
@@ -31,18 +35,23 @@ public class ChatGroup {
         groupRef = database.getReference("chat_groups");
     }
 
-    private List<String> groupNames = new ArrayList<>();
 
     public void setOnGroupChangedListener(final OnGroupChangedListener listener) {
         groupRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 groupNames = new ArrayList<>();
+                groupPhoto = new ArrayList<>();
+//                HashMap x = new HashMap<>();
 
                 Iterable<DataSnapshot> groups = dataSnapshot.getChildren();
                 for (DataSnapshot e : groups) {
-                    String value = (String) e.getValue();
-                    groupNames.add(value);
+                    String name = (String) e.getKey();
+                    String url = (String) e.getValue();
+                    groupNames.add(name);
+                    groupPhoto.add(url);
+//                    groupPhoto.add();
+
                     //TODO.삭제.5
                     groupkeys.add(e.getKey());
                 }
@@ -67,6 +76,10 @@ public class ChatGroup {
 
     public String getGroup(int position) {
         return groupNames.get(position);
+    }
+
+    public String getGroupPhoto(int position) {
+        return groupPhoto.get(position);
     }
 
     public int getSize() {

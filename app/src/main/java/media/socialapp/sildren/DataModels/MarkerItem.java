@@ -1,19 +1,31 @@
 package media.socialapp.sildren.DataModels;
 
+import com.google.android.gms.maps.model.Marker;
+
+import media.socialapp.sildren.utilities.OnMarkerSetListener;
+
 /**
  * Created by TedPark on 16. 4. 26..
  */
 public class MarkerItem {
 
 
-    double lat;
-    double lon;
-    int price;
+    private double lat;
+    private double lon;
+    private String title;
+    private String name;
+    private Marker marker;
+    private OnMarkerSetListener onMarkerSetListener;
 
-    public MarkerItem(double lat, double lon, int price) {
+    public MarkerItem() {
+    }
+
+    public MarkerItem(String title, String name, double lat, double lon) {
+        this.title = title;
+        this.name = name;
         this.lat = lat;
         this.lon = lon;
-        this.price = price;
+
     }
 
     public double getLat() {
@@ -32,13 +44,26 @@ public class MarkerItem {
         this.lon = lon;
     }
 
-    public int getPrice() {
-        return price;
+
+    public void setOnMarkerSetListener(OnMarkerSetListener listener) {
+        this.onMarkerSetListener = listener;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public OnMarkerSetListener getOnMarkerSetListener() {
+        return onMarkerSetListener;
     }
 
+    public void fetchMarker(){
+        if(onMarkerSetListener != null){
+            onMarkerSetListener.onMarkerSet(marker);
+        }
+    }
 
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
+    }
 }

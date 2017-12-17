@@ -314,7 +314,7 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
             latitude = marker.getPosition().latitude;
             longitude = marker.getPosition().longitude;
 //                    LatLng latLng = new LatLng(latitude, longitude);
-            Geocoder geocoder = new Geocoder(getApplicationContext());
+            Geocoder geocoder = new Geocoder(getApplicationContext(),Locale.KOREAN);
             try {
                 addressList = geocoder.getFromLocation(latitude, longitude, 1);
                 str = addressList.get(0).getLocality() + ",";

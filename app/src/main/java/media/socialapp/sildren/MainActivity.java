@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements
 //                    mapFragment.setArguments(new Bundle());
 //                    openFragmentByContent(mapFragment,null);
 
-                    intent = new Intent(getApplicationContext(), MapsActivity.class);
+                    intent = new Intent(getApplicationContext(), PathMapActivity.class);
                     startActivity(intent);
                     return true;
             }

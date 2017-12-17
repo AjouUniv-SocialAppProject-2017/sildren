@@ -119,7 +119,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         holder.caption.setText(getItem(position).getCaption());
 
         List<Comment> comments = getItem(position).getComments();
-        holder.comments.setText("View all " + comments.size() + " comments");
+        holder.comments.setText("모든 " + comments.size() + "개 댓글보기");
         holder.comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,9 +132,9 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
         String timestampDifference = getTimestampDifference(getItem(position));
         if(!timestampDifference.equals("0")){
-            holder.timeDetla.setText(timestampDifference + " DAYS AGO");
+            holder.timeDetla.setText(timestampDifference + " 일 전");
         }else{
-            holder.timeDetla.setText("TODAY");
+            holder.timeDetla.setText("오늘");
         }
 
         final ImageLoader imageLoader = ImageLoader.getInstance();
@@ -391,29 +391,29 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
                             int length = splitUsers.length;
                             if(length == 1){
-                                holder.likesString = "Liked by " + splitUsers[0];
+                                holder.likesString = splitUsers[0] + " 가 좋아합니다. ";
                             }
                             else if(length == 2){
                                 holder.likesString = "Liked by " + splitUsers[0]
-                                        + " and " + splitUsers[1];
+                                        + " 와 " + splitUsers[1] + " 가 좋아합니다. ";
                             }
                             else if(length == 3){
                                 holder.likesString = "Liked by " + splitUsers[0]
                                         + ", " + splitUsers[1]
-                                        + " and " + splitUsers[2];
+                                        + " 와 " + splitUsers[2] + " 가 좋아합니다. ";
 
                             }
                             else if(length == 4){
-                                holder.likesString = "Liked by " + splitUsers[0]
+                                holder.likesString = splitUsers[0]
                                         + ", " + splitUsers[1]
                                         + ", " + splitUsers[2]
-                                        + " and " + splitUsers[3];
+                                        + " 와 " + splitUsers[3] + " 가 좋아합니다. ";
                             }
                             else if(length > 4){
-                                holder.likesString = "Liked by " + splitUsers[0]
+                                holder.likesString = splitUsers[0]
                                         + ", " + splitUsers[1]
                                         + ", " + splitUsers[2]
-                                        + " and " + (splitUsers.length - 3) + " others";
+                                        + " 외 " + (splitUsers.length - 3) + "명이 좋아합니다. ";
                             }
                             Log.d(TAG, "onDataChange: likes string: " + holder.likesString);
                             //setup likes string

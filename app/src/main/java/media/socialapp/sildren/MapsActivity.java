@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import media.socialapp.sildren.DataModels.MarkerItem;
 import media.socialapp.sildren.utilities.OnMarkerSetListener;
@@ -47,16 +55,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int VERIFY_PERMISSIONS_REQUEST = 1;
     private static final String TAG = "MapsActivity";
     private static final String EXTRA = "NextActivity";
+
+    ArrayList<Marker> markers = new ArrayList<Marker>();
+    static final int POLYGON_POINTS = 5;
+    Polygon shape;
+
+    public static MarkerItem markerItem = new MarkerItem();
+    private List<MarkerItem> markerItems;
+    private DatabaseReference markerRef;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
+    private OnMarkerSetListener onMarkerSetListener;
+
     GoogleMap mGoogleMap;
     GoogleApiClient mGoogleApiClient;
-    public static MarkerItem markerItem = new MarkerItem();
-    private OnMarkerSetListener onMarkerSetListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (googleServicesAvailable()) {
-            Toast.makeText(this, "Perfect!!!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Perfect!!!", Toast.LENGTH_LONG).show();
             setContentView(R.layout.activity_maps);
             initMap();
         } else {
@@ -68,6 +86,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void initMap() {
         com.google.android.gms.maps.MapFragment mapFragment = (com.google.android.gms.maps.MapFragment) getFragmentManager().findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(this);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        markerRef = database.getReference("markers");
 
     }
 
@@ -90,7 +110,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleMap = googleMap;
 
 
+
         if (mGoogleMap != null) {
+
+                setMarkers("Local");
 
 
             mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -115,7 +138,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 @Override
                 public void onMarkerDragEnd(Marker marker) {
 
-                    Geocoder gc = new Geocoder(MapsActivity.this);
+                    Geocoder gc = new Geocoder(MapsActivity.this, Locale.KOREAN);
                     LatLng ll = marker.getPosition();
                     double lat = ll.latitude;
                     double lng = ll.longitude;
@@ -141,7 +164,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double mLng = marker.getPosition().longitude;
                     markerItem = new MarkerItem();
                     markerItem.setMarker(marker);
-                    if (EXTRA == getIntent().getStringExtra(EXTRA)) {
+                    Log.d(TAG, "extra - " + getIntent().getStringExtra(EXTRA));
+                    if (EXTRA.equals(getIntent().getStringExtra("Calling"))) {
                         finish();
                     }
                     return false;
@@ -164,6 +188,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
                     TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
                     TextView tvSnippet = (TextView) v.findViewById(R.id.tv_snippet);
+                    //ImageView imageView = (ImageView) v.findViewById(R.id.info_image);
 
                     LatLng ll = marker.getPosition();
                     tvLocality.setText(marker.getTitle());
@@ -177,35 +202,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
-        goToLocationZoom(39.008224, -76.8984527, 15);
+        goToLocationZoom(37.285812, 127.045423, 15);
 
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                // TODO: Consider calling
-//                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for Activity#requestPermissions for more details.
-//                return;
-//            }
-//        }
 
         if (checkPermissionsArray(Permissions.PERMISSIONS)) {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+            if (ActivityCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             mGoogleMap.setMyLocationEnabled(true);
-        }else{
+        } else {
             verifyPermissions(Permissions.PERMISSIONS);
         }
 
@@ -231,10 +239,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleMap.moveCamera(update);
 
 
-
     }
-
-    Marker marker;
 
     public void geoLocate(View view) throws IOException {
 
@@ -256,6 +261,56 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    public void setMarkers(final String locality){
+        Log.d(TAG,"setMarkers init");
+        if (markers.size() == POLYGON_POINTS) {
+            removeEverything();
+        }
+
+
+
+
+        if (markers.size() == POLYGON_POINTS) {
+            drawPolygon();
+        }
+        markerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                markerItems = new ArrayList<MarkerItem>();
+
+                Iterable<DataSnapshot> groups = dataSnapshot.getChildren();
+                for (DataSnapshot e : groups) {
+                    String title = (String) e.child("title").getValue();
+                    Log.d(TAG,"title - " + title);
+                    String name = (String) e.child("name").getValue();
+                    Log.d(TAG,"name - " + name);
+                    double lat = (double) e.child("lat").getValue();
+                    Log.d(TAG,"lat - " + lat);
+                    double lng = (double) e.child("lon").getValue();
+                    Log.d(TAG,"lng - " + title);
+
+                    MarkerOptions options = new MarkerOptions()
+                            .title(title)
+                            .draggable(true)
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                            .position(new LatLng(lat, lng))
+                            .snippet(name);
+                    markers.add(mGoogleMap.addMarker(options));
+                    Log.d(TAG,"markers size - " + markers.size());
+                }
+                if (markers.size() == POLYGON_POINTS) {
+                    drawPolygon();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
 //    Circle circle;
 
@@ -264,16 +319,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //    Polyline line;
 
 
-    ArrayList<Marker> markers = new ArrayList<Marker>();
-    static final int POLYGON_POINTS = 5;
-    Polygon shape;
+
 
     private void setMarker(String locality, double lat, double lng) {
 //        if(marker != null){
 //            removeEverything();
 //        }
 
-        if(markers.size() == POLYGON_POINTS){
+        if (markers.size() == POLYGON_POINTS) {
             removeEverything();
         }
 
@@ -286,7 +339,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         markers.add(mGoogleMap.addMarker(options));
 
-        if(markers.size() == POLYGON_POINTS){
+
+        if (markers.size() == POLYGON_POINTS) {
             drawPolygon();
         }
 
@@ -310,7 +364,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .strokeWidth(3)
                 .strokeColor(Color.RED);
 
-        for(int i=0; i<POLYGON_POINTS;i++){
+        for (int i = 0; i < POLYGON_POINTS; i++) {
             options.add(markers.get(i).getPosition());
         }
         shape = mGoogleMap.addPolygon(options);
@@ -318,7 +372,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void removeEverything() {
-        for(Marker marker : markers) {
+        for (Marker marker : markers) {
             marker.remove();
         }
         markers.clear();
@@ -451,7 +505,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        if(location == null){
+        if (location == null) {
             Toast.makeText(this, "Cant get current location", Toast.LENGTH_LONG).show();
         } else {
             LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
@@ -460,7 +514,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public void verifyPermissions(String[] permissions){
+    public void verifyPermissions(String[] permissions) {
         Log.d(TAG, "verifyPermissions: verifying permissions.");
 
         ActivityCompat.requestPermissions(
@@ -470,30 +524,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         );
     }
 
-    public boolean checkPermissionsArray(String[] permissions){
+    public boolean checkPermissionsArray(String[] permissions) {
         Log.d(TAG, "checkPermissionsArray: checking permissions array.");
 
-        for(int i = 0; i< permissions.length; i++){
+        for (int i = 0; i < permissions.length; i++) {
             String check = permissions[i];
-            if(!checkPermissions(check)){
+            if (!checkPermissions(check)) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean checkPermissions(String permission){
+    public boolean checkPermissions(String permission) {
         Log.d(TAG, "checkPermissions: checking permission: " + permission);
 
         int permissionRequest = ActivityCompat.checkSelfPermission(MapsActivity.this, permission);
 
-        if(permissionRequest != PackageManager.PERMISSION_GRANTED){
+        if (permissionRequest != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "checkPermissions: \n Permission was not granted for: " + permission);
             return false;
-        }
-        else{
+        } else {
             Log.d(TAG, "checkPermissions: \n Permission was granted for: " + permission);
             return true;
         }
     }
+
+
 }

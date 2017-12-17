@@ -116,22 +116,22 @@
                 android:background="@color/white">
 
                 <TextView
+                    android:id="@+id/image_likes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Liked by Mitch, Tom, Mohammed and 30 others"
+                    android:text="가 좋아합니다"
                     android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:id="@+id/image_likes"/>
+                    android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/image_caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="mitch.tabian moutains #earthporn #mountains"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:id="@+id/image_caption"
                     android:layout_below="@+id/image_likes"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="15dp"
+                    android:text="해쉬태그"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -124,7 +124,7 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
                 String name = mAuth.getCurrentUser().getDisplayName();
 
                 MarkerItem markerItem = new MarkerItem(title, name, latitude, longitude);
-                myRef.child("markers").child("title").setValue(markerItem);
+                myRef.child("markers").child(title).setValue(markerItem);
                 if (intent.hasExtra(getString(R.string.selected_image))) {
                     imgUrl = intent.getStringExtra(getString(R.string.selected_image));
                     mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, title,

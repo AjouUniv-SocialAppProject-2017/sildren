@@ -27,7 +27,7 @@
     <string name="hint_end_time">종료</string>
 
     <!-- activity names -->
-    <string name="main_activity">Home Activity</string>
+    <string name="main_activity">MainActivity</string>
 
 
     <!-- button text-->

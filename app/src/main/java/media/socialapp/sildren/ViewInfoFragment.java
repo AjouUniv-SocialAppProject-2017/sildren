@@ -46,7 +46,7 @@ public class ViewInfoFragment extends Fragment {
     private FirebaseMethods mFirebaseMethods;
 
     private ImageView mImageView;
-    private EditText mCaption;
+//    private EditText mCaption;
     private EditText mTitle;
     private EditText mDate;
     private EditText mStartTime;
@@ -76,7 +76,7 @@ public class ViewInfoFragment extends Fragment {
         mFirebaseMethods = new FirebaseMethods(getContext());
 
         mImageView = (ImageView) view.findViewById(R.id.imageShare);
-        mCaption = (EditText) view.findViewById(R.id.caption);
+//        mCaption = (EditText) view.findViewById(R.id.caption);
         mTitle = (EditText) view.findViewById(R.id.field_title);
         mLocation = (EditText) view.findViewById(R.id.field_location);
         mDate = (EditText) view.findViewById(R.id.field_date);
@@ -99,7 +99,7 @@ public class ViewInfoFragment extends Fragment {
     private void showInfo() {
         final ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(selectedPhoto.getImage_path(),mImageView);
-        mCaption.setText(selectedPhoto.getCaption());
+//        mCaption.setText(selectedPhoto.getCaption());
         mTitle.setText(selectedPhoto.getTitle());
         mLocation.setText(selectedPhoto.getLocation());
         mDate.setText(selectedPhoto.getDate());
@@ -165,7 +165,7 @@ public class ViewInfoFragment extends Fragment {
                         Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
 
 
-                        photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+//                        photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
                         if (objectMap.get(getString(R.string.field_tags)) != null)
                             photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());
                         photo.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());

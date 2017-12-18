@@ -142,51 +142,51 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
-        startEdit = (EditText) findViewById(R.id.start_edit);
-        endEdit = (EditText) findViewById(R.id.end_edit);
-        Button search = (Button) findViewById(R.id.path_button);
+//        startEdit = (EditText) findViewById(R.id.start_edit);
+//        endEdit = (EditText) findViewById(R.id.end_edit);
+//        Button search = (Button) findViewById(R.id.path_button);
 
 
-        startEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    new Handler().postDelayed(new Runnable() {
+//        startEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                if (b) {
+//                    new Handler().postDelayed(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+////                            placeAutoComplete();
+//                            PLACE_CODE = START_PLACE_CODE;
+//                        }
+//                    }, 1);
+//                }
+//            }
+//        });
+//
+//        endEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                if (b) {
+//                    new Handler().postDelayed(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+////                            placeAutoComplete();
+//                            PLACE_CODE = END_PLACE_CODE;
+//                        }
+//                    }, 1);
+//                }
+//            }
+//        });
 
-                        @Override
-                        public void run() {
-//                            placeAutoComplete();
-                            PLACE_CODE = START_PLACE_CODE;
-                        }
-                    }, 1);
-                }
-            }
-        });
 
-        endEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    new Handler().postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-//                            placeAutoComplete();
-                            PLACE_CODE = END_PLACE_CODE;
-                        }
-                    }, 1);
-                }
-            }
-        });
-
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendRequest();
-
-            }
-        });
+//        search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                sendRequest();
+//
+//            }
+//        });
 
         if (mGoogleMap != null) {
 
@@ -273,6 +273,11 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
 //                    } catch (UnsupportedEncodingException e) {
 //                        e.printStackTrace();
 //                    }
+//                        Log.d(TAG,"directionFInder");
+//                        Log.d(TㅔAG,"directionFInder - mLat2" + mLat2);
+//                        Log.d(TAG,"directionFInder - mLng2"+ mLng2);
+//                        Log.d(TAG,"directionFInder - mLat"+ mLat);
+//                        Log.d(TAG,"directionFInder - mLng"+ mLng);
                         requestDirection(add2.getAddressLine(0), add.getAddressLine(0));
 
                     }
@@ -365,18 +370,18 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
-    public void onPlaceSelected(Place place) {
-
-        if (PLACE_CODE == START_PLACE_CODE) {
-            startEdit.setText(place.getName());
-        }
-
-        if (PLACE_CODE == END_PLACE_CODE) {
-            endEdit.setText(place.getName());
-
-        }
-
-    }
+//    public void onPlaceSelected(Place place) {
+//
+//        if (PLACE_CODE == START_PLACE_CODE) {
+//            startEdit.setText(place.getName());
+//        }
+//
+//        if (PLACE_CODE == END_PLACE_CODE) {
+//            endEdit.setText(place.getName());
+//
+//        }
+//
+//    }
 
 
     private void goToLocation(double lat, double lng) {
@@ -442,7 +447,7 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
                     MarkerOptions options = new MarkerOptions()
                             .title(title)
                             .draggable(true)
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
                             .position(new LatLng(lat, lng))
                             .snippet(name);
                     markers.add(mGoogleMap.addMarker(options));
@@ -481,7 +486,7 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
         MarkerOptions options = new MarkerOptions()
                 .title(locality)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
                 .position(new LatLng(lat, lng))
                 .snippet("I am Here");
 
@@ -710,29 +715,29 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    public void sendRequest() {
-//        Uri uri = Uri.parse("https://maps.googleapis.com/maps/api/directions/json?origin=Brooklyn&destination=Queens&mode=transit&key=AIzaSyBjll9Cro-BivWa4MEgfTVQbaDUINajF1Q");
-//        Intent it = new Intent(Intent.ACTION_VIEW, uri);
-//        startActivity(it);
-
-        String origin = startEdit.getText().toString();
-        String destination = endEdit.getText().toString();
-
-        if (origin.isEmpty()) {
-            return;
-        }
-        if (destination.isEmpty()) {
-            return;
-        }
-
-        try {
-            new DirectionFinder(this, origin, destination).execute();
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public void sendRequest() {
+////        Uri uri = Uri.parse("https://maps.googleapis.com/maps/api/directions/json?origin=Brooklyn&destination=Queens&mode=transit&key=AIzaSyBjll9Cro-BivWa4MEgfTVQbaDUINajF1Q");
+////        Intent it = new Intent(Intent.ACTION_VIEW, uri);
+////        startActivity(it);
+//
+//        String origin = startEdit.getText().toString();
+//        String destination = endEdit.getText().toString();
+//
+//        if (origin.isEmpty()) {
+//            return;
+//        }
+//        if (destination.isEmpty()) {
+//            return;
+//        }
+//
+//        try {
+//            new DirectionFinder(this, origin, destination).execute();
+//
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }/**/
 
     public void requestDirection(String add1, String add2) {
         try {

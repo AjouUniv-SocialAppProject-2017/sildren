@@ -1,5 +1,7 @@
 package media.socialapp.sildren;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +13,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -42,6 +47,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private RadioButton type0radioBtn;
     private RadioButton type1radioBtn;
     private RadioGroup radioGroup;
+    private GoogleSignInClient mGoogleSignInClient;
 
     private FirebaseAuth mAuth;
     private FirebaseMethods firebaseMethods;
@@ -62,6 +68,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         type0radioBtn = (RadioButton) findViewById(R.id.user_type1_radio_btn);
         type1radioBtn = (RadioButton) findViewById(R.id.user_type0_radio_btn);
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -153,7 +165,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private void signOut() {
         mAuth.signOut();
-        updateUI(null);
+        // Firebase sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateUI(null);
+                    }
+                });
+
     }
 
     private void sendEmailVerification() {

@@ -258,7 +258,7 @@ public class ViewCommentsFragment extends Fragment {
                                     Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
 
                                     photo.setCaption(objectMap.get(mContext.getString(R.string.field_caption)).toString());
-                                    photo.setTags(objectMap.get(mContext.getString(R.string.field_tags)).toString());
+//                                    photo.setTags(objectMap.get(mContext.getString(R.string.field_tags)).toString());
                                     photo.setPhoto_id(objectMap.get(mContext.getString(R.string.field_photo_id)).toString());
                                     photo.setUser_id(objectMap.get(mContext.getString(R.string.field_user_id)).toString());
                                     photo.setDate_created(objectMap.get(mContext.getString(R.string.field_date_created)).toString());

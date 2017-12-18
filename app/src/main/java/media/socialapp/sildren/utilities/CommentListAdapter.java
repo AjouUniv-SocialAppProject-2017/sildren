@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import media.socialapp.sildren.DataModels.Comment;
 import media.socialapp.sildren.DataModels.UserAccountSettings;
 import media.socialapp.sildren.R;
@@ -51,7 +52,7 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
 
     private static class ViewHolder{
         TextView comment, username, timestamp, reply, likes;
-//        CircleImageView profileImage;
+        CircleImageView profileImage;
         ImageView like;
     }
 
@@ -68,10 +69,10 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
             holder.comment = (TextView) convertView.findViewById(R.id.comment);
             holder.username = (TextView) convertView.findViewById(R.id.comment_username);
             holder.timestamp = (TextView) convertView.findViewById(R.id.comment_time_posted);
-            holder.reply = (TextView) convertView.findViewById(R.id.comment_reply);
-            holder.like = (ImageView) convertView.findViewById(R.id.comment_like);
-            holder.likes = (TextView) convertView.findViewById(R.id.comment_likes);
-//            holder.profileImage = (CircleImageView) convertView.findViewById(R.id.comment_profile_image);
+//            holder.reply = (TextView) convertView.findViewById(R.id.comment_reply);
+//            holder.like = (ImageView) convertView.findViewById(R.id.comment_like);
+//            holder.likes = (TextView) convertView.findViewById(R.id.comment_likes);
+            holder.profileImage = (CircleImageView) convertView.findViewById(R.id.comment_profile_image);
 
             convertView.setTag(holder);
         }else{
@@ -84,9 +85,9 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         //set the timestamp difference
         String timestampDifference = getTimestampDifference(getItem(position));
         if(!timestampDifference.equals("0")){
-            holder.timestamp.setText(timestampDifference + " d");
+            holder.timestamp.setText(timestampDifference + " 일 전");
         }else{
-            holder.timestamp.setText("today");
+            holder.timestamp.setText("오늘");
         }
 
         //set the username and profile image
@@ -104,9 +105,9 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
 
                     ImageLoader imageLoader = ImageLoader.getInstance();
 
-//                    imageLoader.displayImage(
-//                            singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
-//                            holder.profileImage);
+                    imageLoader.displayImage(
+                            singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
+                            holder.profileImage);
                 }
 
             }
@@ -141,7 +142,7 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         String difference = "";
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.CANADA);
-        sdf.setTimeZone(TimeZone.getTimeZone("Canada/Pacific"));//google 'android list of timezones'
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));//google 'android list of timezones'
         Date today = c.getTime();
         sdf.format(today);
         Date timestamp;

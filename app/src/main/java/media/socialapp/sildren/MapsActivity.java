@@ -293,7 +293,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     MarkerOptions options = new MarkerOptions()
                             .title(title)
                             .draggable(true)
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
                             .position(new LatLng(lat, lng))
                             .snippet(name);
                     markers.add(mGoogleMap.addMarker(options));
@@ -334,7 +334,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MarkerOptions options = new MarkerOptions()
                 .title(locality)
                 .draggable(true)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher))
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.pin))
                 .position(new LatLng(lat, lng))
                 .snippet("I am Here");
 

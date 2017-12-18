@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private ListView mListView;
     private SignInButton mBtnGoogleSignIn;
-    private Button mBtnSignUp;
+//    private Button mBtnSignUp;
     private Button mBtnSignIn;
     private EditText mEmailField;
     private EditText mPasswordField;
@@ -64,8 +64,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         // Buttons
-        mBtnSignUp = (Button) findViewById(R.id.btn_signUp);
-        mBtnSignUp.setOnClickListener(this);
+//        mBtnSignUp = (Button) findViewById(R.id.btn_signUp);
+//        mBtnSignUp.setOnClickListener(this);
         mBtnSignIn = (Button) findViewById(R.id.btn_signIn);
         mBtnSignIn.setOnClickListener(this);
         mEmailField = (EditText) findViewById(R.id.input_id);
@@ -257,10 +257,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.btn_signUp:
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivity(intent);
-                break;
+//            case R.id.btn_signUp:
+//                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+//                startActivity(intent);
+//                break;
 
             case R.id.btn_signIn:
                 Toast.makeText(LoginActivity.this, "SignIn Clicked",

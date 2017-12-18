@@ -62,7 +62,7 @@ public class FirebaseMethods {
     public void uploadNewPhoto(String photoType, final String caption, final String title,
                                final String location, final String date, final String startTime,
                                final String endTime, final String recruit, final String content,
-                               final int count, final String imgUrl,
+                               final int count,final String name, final String imgUrl,
                                Bitmap bm) {
         Log.d(TAG, "uploadNewPhoto: attempting to uplaod new photo.");
 
@@ -90,7 +90,7 @@ public class FirebaseMethods {
 
                     Toast.makeText(mContext, "photo upload success", Toast.LENGTH_SHORT).show();
 
-                    addPhotoToDatabase(caption, title, location, date, startTime, endTime, recruit, content, firebaseUrl.toString());
+                    addPhotoToDatabase(caption, title, location, date, startTime, endTime, recruit, content, name,  firebaseUrl.toString());
 
                     Intent intent = new Intent(mContext, MainActivity.class);
                     mContext.startActivity(intent);
@@ -164,7 +164,7 @@ public class FirebaseMethods {
     }
 
     private void addPhotoToDatabase(String caption, String title, String location, String date,
-                                    String startTime, String endTime, String recruit, String content, String url) {
+                                    String startTime, String endTime, String recruit, String content,String name, String url) {
         Log.d(TAG, "addPhotoToDatabase: adding photo to database.");
 
         String tags = StringManipulation.getTags(caption);
@@ -183,6 +183,7 @@ public class FirebaseMethods {
         photo.setEndTime(endTime);
         photo.setRecruit(recruit);
         photo.setContent(content);
+        photo.setName(name);
 
 
         //insert into database
@@ -217,7 +218,9 @@ public class FirebaseMethods {
                 .child(userID)
                 .setValue(user);
 
-
+        if(mAuth.getCurrentUser().getPhotoUrl() != null) {
+            profile_photo = mAuth.getCurrentUser().getPhotoUrl().toString();
+        }
         UserAccountSettings settings = new UserAccountSettings(
                 description,
                 username,

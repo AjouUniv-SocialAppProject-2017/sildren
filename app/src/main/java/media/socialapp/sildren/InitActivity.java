@@ -15,13 +15,14 @@ public class InitActivity extends AppCompatActivity {
 
     public void onSignUpBtnClicked(View view) {
 
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this,SignupActivity.class);
         startActivity(intent);
+
     }
 
     public void onLoginBtnClicked(View view) {
 
-        Intent intent = new Intent(this,SignupActivity.class);
+        Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
 
     }

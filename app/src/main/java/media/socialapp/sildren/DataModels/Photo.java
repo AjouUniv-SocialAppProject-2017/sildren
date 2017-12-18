@@ -20,6 +20,7 @@ public class Photo implements Parcelable {
     private String endTime;
     private String recruit;
     private String content;
+    private String name;
 
 
 
@@ -46,6 +47,7 @@ public class Photo implements Parcelable {
         title = in.readString();
         location = in.readString();
         recruit = in.readString();
+        name = in.readString();
     }
 
     @Override
@@ -63,6 +65,7 @@ public class Photo implements Parcelable {
         dest.writeString(title);
         dest.writeString(location);
         dest.writeString(recruit);
+        dest.writeString(name);
     }
 
     @Override
@@ -82,6 +85,7 @@ public class Photo implements Parcelable {
                 ", title=" + title +
                 ", location=" + location +
                 ", recruit=" + recruit +
+                ", name=" + name +
                 '}';
     }
 
@@ -210,5 +214,11 @@ public class Photo implements Parcelable {
         this.content = content;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

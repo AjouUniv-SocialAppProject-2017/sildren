@@ -1,9 +1,76 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/appbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/white_grey_border_bottom"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold|italic"
+                android:visibility="visible" />
+
+
+        </RelativeLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tvNext"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="길찾기"
+            android:textAlignment="center"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/duration_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/distance_textView"
+            android:text="0 분" />
+
+        <TextView
+            android:id="@+id/distance_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:text="0 km" />
+    </RelativeLayout>
+
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -12,76 +79,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="media.socialapp.sildren.PathMapActivity"
-        android:layout_below="@+id/path_button" />
+        android:layout_below="@+id/path_button"
+        tools:context="media.socialapp.sildren.PathMapActivity" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout">
-
-        <TextView
-            android:text="출발지"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/start_edit"
-            android:layout_weight="9"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout2">
-
-        <TextView
-            android:text="도착지"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <EditText
-            android:id="@+id/end_edit"
-            android:layout_weight="9"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/duration_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0 mins"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_toEndOf="@+id/distance_textView"
-        android:layout_marginStart="29dp" />
-
-    <TextView
-        android:id="@+id/distance_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0 km"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_toEndOf="@+id/path_button"
-        android:layout_marginStart="37dp" />
-
-    <Button
-        style="@style/Base.Widget.AppCompat.Button.Colored"
-        android:id="@+id/path_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout2"
-        android:text="search" />
-
-</RelativeLayout>
+</LinearLayout>

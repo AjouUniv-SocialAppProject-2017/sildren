@@ -81,7 +81,7 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
         mFirebaseMethods = new FirebaseMethods(NextActivity.this);
-        mCaption = (EditText) findViewById(R.id.caption);
+//        mCaption = (EditText) findViewById(R.id.caption);
         mTitle = (EditText) findViewById(R.id.field_title);
         mLocation = (EditText) findViewById(R.id.field_location);
         mDate = (EditText) findViewById(R.id.field_date);
@@ -113,7 +113,7 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
                 Log.d(TAG, "onClick: navigating to the final share screen.");
                 //upload the image to firebase
                 Toast.makeText(NextActivity.this, "Attempting to upload new photo", Toast.LENGTH_SHORT).show();
-                String caption = mCaption.getText().toString();
+                String caption = "";
                 String title = mTitle.getText().toString();
                 String location = mLocation.getText().toString();
                 String date = mDate.getText().toString();
@@ -128,11 +128,11 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
                 if (intent.hasExtra(getString(R.string.selected_image))) {
                     imgUrl = intent.getStringExtra(getString(R.string.selected_image));
                     mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, title,
-                            location, date, startTime, endTime, recruit, content, imageCount, imgUrl, null);
+                            location, date, startTime, endTime, recruit, content, imageCount, name,imgUrl,null);
                 } else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
                     bitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
                     mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, title,
-                            location, date, startTime, endTime, recruit, content, imageCount, null, bitmap);
+                            location, date, startTime, endTime, recruit, content, imageCount, name,null,  bitmap);
                 }
             }
         });
@@ -170,12 +170,13 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
             }
         };
 
+        // TimePickerDialog.THEME_HOLO_LIGHT   X
         mDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: mDate");
-                new DatePickerDialog(NextActivity.this, DatePickerDialog.THEME_HOLO_LIGHT, date, calendar
+                new DatePickerDialog(NextActivity.this, date, calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -186,7 +187,7 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: mStartTime");
-                new TimePickerDialog(NextActivity.this, TimePickerDialog.THEME_HOLO_LIGHT, startTime, calendar
+                new TimePickerDialog(NextActivity.this,  startTime, calendar
                         .get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)
                         , true).show();
             }
@@ -197,7 +198,7 @@ public class NextActivity extends AppCompatActivity implements OnMarkerSetListen
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: mEndTime");
-                new TimePickerDialog(NextActivity.this, TimePickerDialog.THEME_HOLO_LIGHT, endTime, calendar
+                new TimePickerDialog(NextActivity.this, endTime, calendar
                         .get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)
                         , true).show();
             }

@@ -35,20 +35,20 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/chatgroup_name_textview"
+                android:id="@+id/chatgroup_title_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:textSize="@dimen/lg_fontsize"
                 android:textStyle="bold"
-                tools:text="이름" />
+                tools:text="제목" />
 
             <TextView
-                android:id="@+id/txt_message"
+                android:id="@+id/chatgroup_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                tools:text="타인의 메시지" />
+                tools:text="이름" />
         </LinearLayout>
 
         <TextView

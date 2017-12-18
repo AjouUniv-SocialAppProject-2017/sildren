@@ -46,7 +46,7 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="15dp"
-                            android:text="@string/string_share"
+                            android:text="올리기"
                             android:textColor="@color/link_blue"
                             android:textSize="20sp" />
 

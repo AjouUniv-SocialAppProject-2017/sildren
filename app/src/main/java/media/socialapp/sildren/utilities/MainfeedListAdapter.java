@@ -67,7 +67,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
     static class ViewHolder{
         String likesString;
-        TextView username, timeDetla, caption, likes, comments;
+        TextView username, timeDetla, caption, likes, comments, content, name;
         SquareImageView image;
         ImageView heartRed, heartWhite, comment;
         Button info;
@@ -93,6 +93,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             holder = new ViewHolder();
 
             holder.username = (TextView) convertView.findViewById(R.id.username);
+            holder.name = (TextView) convertView.findViewById(R.id.main_name);
             holder.image = (SquareImageView) convertView.findViewById(R.id.post_image);
             holder.heartRed = (ImageView) convertView.findViewById(R.id.image_heart_red);
             holder.heartWhite = (ImageView) convertView.findViewById(R.id.image_heart);
@@ -102,6 +103,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             holder.likes = (TextView) convertView.findViewById(R.id.image_likes);
             holder.comments = (TextView) convertView.findViewById(R.id.image_comments_link);
             holder.caption = (TextView) convertView.findViewById(R.id.image_caption);
+            holder.content = (TextView) convertView.findViewById(R.id.main_text_content);
             holder.timeDetla = (TextView) convertView.findViewById(R.id.image_time_posted);
             holder.heart = new Heart(holder.heartWhite, holder.heartRed);
             holder.photo = getItem(position);
@@ -114,9 +116,14 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        getCurrentUsername();
+//        getCurrentUsername();
         getLikesString(holder);
         holder.caption.setText(getItem(position).getCaption());
+        holder.content.setText(getItem(position).getContent());
+        holder.name.setText(getItem(position).getName());
+        Log.d(TAG, "getName() " + getItem(position).getName());
+
+
 
         List<Comment> comments = getItem(position).getComments();
         holder.comments.setText("모든 " + comments.size() + "개 댓글보기");
@@ -125,6 +132,11 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: loading comment thread for " + getItem(position).getPhoto_id());
 
+                Log.d(TAG, "onCommentClick" );
+                ((MainActivity)mContext).onCommentThreadSelected(getItem(position),
+                        mContext.getString(R.string.main_activity));
+
+                //another thing?
                 ((MainActivity)mContext).hideLayout();
 
             }
@@ -154,6 +166,8 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                     Log.d(TAG, "onDataChange: found user: "
                             + singleSnapshot.getValue(UserAccountSettings.class).getUsername());
                     holder.username.setText(getItem(position).getTitle());
+                    holder.name.setText(getItem(position).getName());
+                    holder.content.setText(getItem(position).getContent());
 //                    holder.username.setText(singleSnapshot.getValue(UserAccountSettings.class).getUsername());
                     //여기에 프로파일 온클릭 인텐트
                     Log.d(TAG, "onDataChange: found user: " +

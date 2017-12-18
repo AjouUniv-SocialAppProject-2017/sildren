@@ -3,19 +3,37 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp">
 
-        <TextView
-            android:id="@+id/appbar_title"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/white_grey_border_bottom"
-            android:text="@string/app_name"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="30sp"
-            android:textStyle="bold|italic"
-            android:visibility="visible" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/appbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/white_grey_border_bottom"
+                android:text="@string/app_name"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold|italic"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/logout_menu"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:clickable="true"
+                android:onClick="onLogoutBtnClick"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="7dp"
+                android:src="@drawable/ic_ellipses" />
+        </RelativeLayout>
+
     </android.support.design.widget.AppBarLayout>
 </merge>

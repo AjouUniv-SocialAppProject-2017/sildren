@@ -9,7 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import media.socialapp.sildren.utilities.OnGroupChangedListener;
@@ -20,12 +19,14 @@ public class ChatGroup {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser user;
     private String userKey;
-    private List<String> groupNames = new ArrayList<>();
+    private List<String> groupTitle = new ArrayList<>();
     private List<String> groupPhoto = new ArrayList<>();
+    private List<String> groupName= new ArrayList<>();
 
 
     //TODO.삭제.4
     public List<String> groupkeys = new ArrayList<>();
+
 
     public ChatGroup() {
         user = auth.getCurrentUser();
@@ -40,15 +41,19 @@ public class ChatGroup {
         groupRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                groupNames = new ArrayList<>();
+                groupTitle = new ArrayList<>();
+                groupName = new ArrayList<>();
                 groupPhoto = new ArrayList<>();
+
 //                HashMap x = new HashMap<>();
 
                 Iterable<DataSnapshot> groups = dataSnapshot.getChildren();
                 for (DataSnapshot e : groups) {
-                    String name = (String) e.getKey();
-                    String url = (String) e.getValue();
-                    groupNames.add(name);
+                    String title = (String) e.getKey();
+                    String name = (String) e.child("name").getValue();
+                    String url = (String) e.child("photo").getValue();
+                    groupTitle.add(title);
+                    groupName.add(name);
                     groupPhoto.add(url);
 //                    groupPhoto.add();
 
@@ -57,7 +62,7 @@ public class ChatGroup {
                 }
 
                 if (listener != null) {
-                    listener.onDataChanged(groupNames);
+                    listener.onDataChanged(groupTitle);
                 }
 
             }
@@ -70,19 +75,22 @@ public class ChatGroup {
     }
 
     public void saveGroup(String title) {
-        if(!groupNames.contains(title))
+        if(!groupTitle.contains(title))
             groupRef.push().setValue(title);
     }
 
-    public String getGroup(int position) {
-        return groupNames.get(position);
+    public String getGroupTitle(int position) {
+        return groupTitle.get(position);
     }
 
     public String getGroupPhoto(int position) {
         return groupPhoto.get(position);
     }
+    public String getGroupName(int position) {
+        return groupName.get(position);
+    }
 
     public int getSize() {
-        return groupNames.size();
+        return groupTitle.size();
     }
 }

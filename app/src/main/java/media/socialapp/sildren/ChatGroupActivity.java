@@ -55,8 +55,9 @@ public class ChatGroupActivity extends AppCompatActivity {
 
             @Override
             public void onBindViewHolder(final ChatGroupHolder holder, int position) {
-                String groupName = chatGroup.getGroup(position);
+                String groupTitle = chatGroup.getGroupTitle(position);
                 String photoUrl = chatGroup.getGroupPhoto(position);
+                String groupName = chatGroup.getGroupName(position);
                 //                String message = cmodel.getMessage(position);
 //                String timestamp = cmodel.getTimestamp(position);
 
@@ -66,7 +67,7 @@ public class ChatGroupActivity extends AppCompatActivity {
 //
 //                }
 
-                holder.setText(groupName, photoUrl);
+                holder.setText(groupTitle,groupName, photoUrl);
 //                String imageUrl = cmodel.getImageURL(position);
 //                holder.setImage(imageUrl);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +134,7 @@ public class ChatGroupActivity extends AppCompatActivity {
 
     class ChatGroupHolder extends RecyclerView.ViewHolder {
 
-        private TextView userView;
+        private TextView nameView;
         private TextView titleView;
         private ImageView imageView;
         private TextView timestampView;
@@ -143,19 +144,19 @@ public class ChatGroupActivity extends AppCompatActivity {
         public ChatGroupHolder(View itemView) {
             super(itemView);
 
-            titleView = (TextView) itemView.findViewById(R.id.chatgroup_name_textview);
-//            textView = (TextView) itemView.findViewById(R.id.chat_text_view);
+            titleView = (TextView) itemView.findViewById(R.id.chatgroup_title_textview);
+            nameView = (TextView) itemView.findViewById(R.id.chatgroup_name);
             imageView = (ImageView) itemView.findViewById(R.id.chat_group_profile);
 //            timestampView = (TextView) itemView.findViewById(R.id.chat_timestamp_view);
 //            layout = itemView.findViewById(R.id.);
         }
 
-        public void setText(String title, String photoUrl) {
+        public void setText(String title, String name, String photoUrl) {
 //            layout.setGravity(Gravity.LEFT);
             final ImageLoader imageLoader = ImageLoader.getInstance();
             imageLoader.displayImage(photoUrl, imageView);
             titleView.setText(title);
-//            textView.setText(text);
+            nameView.setText(name);
 //            textView.setBackground(getBaseContext().getResources().getDrawable(R.drawable.bg_msg_from));
 //            timestampView.setText(timestamp);
         }

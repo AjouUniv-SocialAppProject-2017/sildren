@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Random;
 
 import media.socialapp.sildren.utilities.ChatAdapter;
+import media.socialapp.sildren.utilities.FirebaseMethods;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int RC_SIGN_IN = 1001;
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildEventListener;
+    private FirebaseMethods firebaseMethods = new FirebaseMethods(this);
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -50,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private ListView mListView;
     private SignInButton mBtnGoogleSignIn;
-//    private Button mBtnSignUp;
+    //    private Button mBtnSignUp;
     private Button mBtnSignIn;
     private EditText mEmailField;
     private EditText mPasswordField;
@@ -257,6 +259,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.LENGTH_SHORT).show();
                 break;
 
+
 //            case R.id.btn_signUp:
 //                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
 //                startActivity(intent);
@@ -269,5 +272,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-}
 
+    private void createAccount(final String email, String password, final String name, final long phoneNumber, final String birth) {
+        Log.d(TAG, "createAccount:" + email);
+        firebaseMethods.addNewUser(phoneNumber, email, name, 0,
+                birth, "", "");
+    }
+}

@@ -7,8 +7,10 @@ android {
         applicationId "media.socialapp.sildren"
         minSdkVersion 21
         targetSdkVersion 25
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false

@@ -38,6 +38,7 @@ public class HomeFragment extends Fragment {
     private ListView mListView;
     private MainfeedListAdapter mAdapter;
     private int mResults;
+    private int count;
 
 
     @Override
@@ -56,8 +57,11 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "getFollowing: searching for following");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+//        Query query = reference
+//                .child(getString(R.string.dbname_following))
+//                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Query query = reference
-                .child(getString(R.string.dbname_following))
+                .child(getString(R.string.dbname_photos))
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -66,6 +70,7 @@ public class HomeFragment extends Fragment {
                     Log.d(TAG, "onDataChange: found user: " +
                             singleSnapshot.child(getString(R.string.field_user_id)).getValue());
 
+//                    mFollowing.add(singleSnapshot.child(getString(R.string.field_user_id)).getValue().toString());
                     mFollowing.add(singleSnapshot.child(getString(R.string.field_user_id)).getValue().toString());
                 }
                 mFollowing.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -83,65 +88,72 @@ public class HomeFragment extends Fragment {
     private void getPhotos() {
         Log.d(TAG, "getPhotos: getting photos");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        for (int i = 0; i < mFollowing.size(); i++) {
-            final int count = i;
-            Query query = reference
-                    .child(getString(R.string.dbname_user_photos))
-                    .child(mFollowing.get(i))
-                    .orderByChild(getString(R.string.field_user_id))
-                    .equalTo(mFollowing.get(i));
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                        Log.d(TAG, "singleSnapShot: getting singleSnapShot");
-                        Log.d(TAG, "dataSnapShot.getChildren(): " + dataSnapshot.getChildren());
-                        Photo photo = new Photo();
+        Query query = reference
+                .child(getString(R.string.dbname_photos));
+//                    .child(mFollowing.get(i))
+//                    .orderByChild(getString(R.string.field_user_id))
+//                    .equalTo(mFollowing.get(i));
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    Log.d(TAG, "singleSnapShot: getting singleSnapShot");
+                    Log.d(TAG, "dataSnapShot.getChildren(): " + dataSnapshot.getChildren());
+                    Photo photo = new Photo();
 
-                        Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+                    Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+                    Log.d(TAG,"objectMap"+objectMap.get(getString(R.string.field_title)).toString());
+                    photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+                    if (objectMap.get(getString(R.string.field_tags)) != null)
+                        photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());
+                    photo.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
+                    photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
+                    photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
+                    photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+                    photo.setContent(objectMap.get(getString(R.string.field_content)).toString());
+                    photo.setDate(objectMap.get(getString(R.string.field_date)).toString());
+                    photo.setStartTime(objectMap.get(getString(R.string.field_startTime)).toString());
+                    photo.setEndTime(objectMap.get(getString(R.string.field_endTime)).toString());
+                    photo.setTitle(objectMap.get(getString(R.string.field_title)).toString());
+                    photo.setLocation(objectMap.get(getString(R.string.field_location)).toString());
+                    photo.setRecruit(objectMap.get(getString(R.string.field_recruit)).toString());
+                    if (objectMap.get("name") != null)
+                        photo.setName(objectMap.get("name").toString());
 
-                        photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
-                        if (objectMap.get(getString(R.string.field_tags)) != null)
-                            photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());
-                        photo.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
-                        photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
-                        photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
-                        photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
-                        photo.setContent(objectMap.get(getString(R.string.field_content)).toString());
-                        photo.setDate(objectMap.get(getString(R.string.field_date)).toString());
-                        photo.setStartTime(objectMap.get(getString(R.string.field_startTime)).toString());
-                        photo.setEndTime(objectMap.get(getString(R.string.field_endTime)).toString());
-                        photo.setTitle(objectMap.get(getString(R.string.field_title)).toString());
-                        photo.setLocation(objectMap.get(getString(R.string.field_location)).toString());
-                        photo.setRecruit(objectMap.get(getString(R.string.field_recruit)).toString());
-                        if (objectMap.get("name") != null)
-                            photo.setName(objectMap.get("name").toString());
-
-                        ArrayList<Comment> comments = new ArrayList<Comment>();
-                        for (DataSnapshot dSnapshot : singleSnapshot
-                                .child(getString(R.string.field_comments)).getChildren()) {
-                            Comment comment = new Comment();
-                            comment.setUser_id(dSnapshot.getValue(Comment.class).getUser_id());
-                            comment.setComment(dSnapshot.getValue(Comment.class).getComment());
-                            comment.setDate_created(dSnapshot.getValue(Comment.class).getDate_created());
-                            comments.add(comment);
-                        }
-
-                        photo.setComments(comments);
-                        mPhotos.add(photo);
+                    ArrayList<Comment> comments = new ArrayList<Comment>();
+                    for (DataSnapshot dSnapshot : singleSnapshot
+                            .child(getString(R.string.field_comments)).getChildren()) {
+                        Comment comment = new Comment();
+                        comment.setUser_id(dSnapshot.getValue(Comment.class).getUser_id());
+                        comment.setComment(dSnapshot.getValue(Comment.class).getComment());
+                        comment.setDate_created(dSnapshot.getValue(Comment.class).getDate_created());
+                        comments.add(comment);
                     }
-                    if (count >= mFollowing.size() - 1) {
-                        //display our photos
-                        displayPhotos();
-                    }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
+                    photo.setComments(comments);
+                    mPhotos.add(photo);
                 }
-            });
-        }
+                displayPhotos();
+//                if (count >= mFollowing.size() - 1) {
+//                    //display our photos
+//                    displayPhotos();
+//                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+//        for (int i = 0; i < mFollowing.size(); i++) {
+//            final int count = i;
+////            Query query = reference
+////                    .child(getString(R.string.dbname_user_photos))
+////                    .child(mFollowing.get(i))
+////                    .orderByChild(getString(R.string.field_user_id))
+////                    .equalTo(mFollowing.get(i));
+//
+//        }
     }
 
     private void displayPhotos() {

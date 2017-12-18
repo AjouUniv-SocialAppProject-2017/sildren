@@ -73,35 +73,41 @@
                     android:inputType="text" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="9">
 
                 <TextView
+                    android:id="@+id/loc_text"
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_alignParentLeft="true"
                     android:hint="@string/hint_location"
                     android:paddingRight="5dp"
                     android:textAlignment="center" />
-
-                <EditText
-                    android:id="@+id/field_location"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="text" />
 
                 <ImageButton
                     android:id="@+id/info_location_button"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
+                    android:layout_toRightOf="@+id/loc_text"
                     android:background="@drawable/vector_map"
                     android:layout_gravity="end"/>
-            </LinearLayout>
+
+                <EditText
+                    android:id="@+id/field_location"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_toRightOf="@+id/info_location_button"
+                    android:inputType="text" />
+
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

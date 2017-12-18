@@ -153,10 +153,15 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         imageLoader.displayImage(getItem(position).getImage_path(), holder.image);
 
         //get the user object
+//        Query userQuery = mReference
+//                .child(mContext.getString(R.string.dbname_users))
+//                .orderByChild(mContext.getString(R.string.field_user_id))
+//                .equalTo(getItem(position).getUser_id());
+
         Query userQuery = mReference
-                .child(mContext.getString(R.string.dbname_users))
-                .orderByChild(mContext.getString(R.string.field_user_id))
-                .equalTo(getItem(position).getUser_id());
+                .child(mContext.getString(R.string.dbname_photos));
+        Log.d(TAG,"userQuery - " + userQuery );
+        Log.d(TAG,"getItem(position).getUser_id() - " + getItem(position).getUser_id() );
         userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

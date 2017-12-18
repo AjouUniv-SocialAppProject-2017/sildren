@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="66dp"
+        android:layout_height="30dp"
         android:layout_weight="2"
         android:background="@color/white"
         android:clipToPadding="false"
@@ -81,46 +81,63 @@
                     android:text="보육원" />
             </RadioGroup>
 
-
-            <EditText
-                android:id="@+id/field_email"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress" />
+                android:layout_width="match_parent">
 
-            <EditText
-                android:id="@+id/field_password"
-                android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/field_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_email"
+                    android:inputType="textEmailAddress" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/hint_password"
-                android:inputType="textPassword" />
+                android:layout_width="match_parent">
+                <EditText
+                    android:id="@+id/field_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <EditText
+                    android:id="@+id/field_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_name"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <EditText
+                    android:id="@+id/field_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_phone_number"
+                    android:inputType="phone" />
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+                <EditText
+                    android:id="@+id/field_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_birth"
+                    android:inputType="date" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/field_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/hint_name"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/field_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/hint_phone_number"
-                android:inputType="phone" />
-
-            <EditText
-                android:id="@+id/field_birth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/hint_birth"
-                android:inputType="date" />
 
 
         </LinearLayout>
@@ -141,9 +158,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="계정 만들기"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="계정 만들기"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
         </LinearLayout>
 

@@ -246,25 +246,26 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
 //                        finish();
 //                    }
                     getDeviceLocation();
-                    double mLat2 = mLastKnownLocation.getLatitude();
-                    double mLng2 = mLastKnownLocation.getLongitude();
-                    Geocoder gc = new Geocoder(PathMapActivity.this, Locale.KOREAN);
+                    if (mLastKnownLocation != null){
+                        double mLat2 = mLastKnownLocation.getLatitude();
+                        double mLng2 = mLastKnownLocation.getLongitude();
+                        Geocoder gc = new Geocoder(PathMapActivity.this, Locale.KOREAN);
 
-                    List<Address> list = null;
-                    try {
-                        list = gc.getFromLocation(mLat, mLng, 1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Address add = list.get(0);
+                        List<Address> list = null;
+                        try {
+                            list = gc.getFromLocation(mLat, mLng, 1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Address add = list.get(0);
 
-                    List<Address> list2 = null;
-                    try {
-                        list2 = gc.getFromLocation(mLat2, mLng2, 1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Address add2 = list2.get(0);
+                        List<Address> list2 = null;
+                        try {
+                            list2 = gc.getFromLocation(mLat2, mLng2, 1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Address add2 = list2.get(0);
 
 //                    try {
 //                        new DirectionFinder(this, add2.getAddressLine(0), add.getAddressLine(0)).execute();
@@ -272,7 +273,9 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
 //                    } catch (UnsupportedEncodingException e) {
 //                        e.printStackTrace();
 //                    }
-                    requestDirection(add2.getAddressLine(0), add.getAddressLine(0));
+                        requestDirection(add2.getAddressLine(0), add.getAddressLine(0));
+
+                    }
 
                     return false;
                 }
@@ -308,15 +311,17 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Address add = list.get(0);
-                    tvLat.setText(marker.getSnippet());
+                    if(list != null){
+                        Address add = list.get(0);
+                        tvLat.setText(marker.getSnippet());
 //                    tvLat.setText("Latitude: " + ll.latitude);
 //                    tvLng.setText("Longitude: " + ll.longitude);
 //                    tvLat.setVisibility(View.GONE);
 //                    tvLng.setVisibility(View.GONE);
-                    tvSnippet.setText(add.getAddressLine(0));
+                        tvSnippet.setText(add.getAddressLine(0));
 
+
+                    }
                     return v;
                 }
             });

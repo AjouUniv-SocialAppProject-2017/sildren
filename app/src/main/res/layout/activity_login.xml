@@ -33,7 +33,7 @@
     <LinearLayout
         android:id="@+id/linear_signIn"
         android:layout_width="290dp"
-        android:layout_height="250dp"
+        android:layout_height="270dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="47dp"
@@ -47,46 +47,46 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.784">
 
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/linear_signIn_id"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/input_id"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:ems="10"
-                android:hint="ID"
+                android:hint="아이디"
                 android:inputType="textPersonName"
                 android:padding="15dp" />
 
-        </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/linear_signIn_pw"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/input_pw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:ems="10"
-                android:hint="PASSWORD"
+                android:hint="비밀번호"
                 android:inputType="textPassword"
                 android:padding="15dp" />
-        </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
 
         <LinearLayout
             android:id="@+id/linear_btn"
@@ -103,7 +103,7 @@
                 android:layout_weight="1"
                 android:text="Sign In"
                 android:textAllCaps="false"
-                android:theme="@style/ThemeOverlay.MyDarkButton"/>
+                android:theme="@style/ThemeOverlay.MyDarkButton" />
 
             <Button
                 android:id="@+id/btn_signUp"
@@ -112,7 +112,7 @@
                 android:layout_weight="1"
                 android:text="Sign Up"
                 android:textAllCaps="false"
-                android:theme="@style/ThemeOverlay.MyDarkButton"/>
+                android:theme="@style/ThemeOverlay.MyDarkButton" />
         </LinearLayout>
 
         <com.google.android.gms.common.SignInButton

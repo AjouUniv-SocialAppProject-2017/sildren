@@ -154,14 +154,14 @@
                     android:textSize="18sp" />
 
                 <TextView
+                    android:id="@+id/image_comments_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="View all 3 comments"
-                    android:textColor="@color/grey"
-                    android:textSize="18sp"
                     android:layout_below="@+id/image_caption"
-                    android:id="@+id/image_comments_link"
-                    android:layout_marginTop="15dp"/>
+                    android:layout_marginTop="15dp"
+                    android:text="댓글 보기"
+                    android:textColor="@color/grey"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="wrap_content"

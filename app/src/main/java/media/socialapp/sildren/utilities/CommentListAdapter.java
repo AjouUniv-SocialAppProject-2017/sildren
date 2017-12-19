@@ -81,6 +81,20 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
 
         //set the comment
         holder.comment.setText(getItem(position).getComment());
+        Log.d(TAG,"getItem(position)" + getItem(position));
+        Log.d(TAG,"getItem(position)" + getItem(position).getDate_created());
+        Log.d(TAG,"getItem(position)" + getItem(position).getUser_id());
+        Log.d(TAG,"set comment : " + getItem(position).getComment());
+        Log.d(TAG,"set username : " + getItem(position).getUser_name());
+        Log.d(TAG,"set userPhoto : " + getItem(position).getUser_photo());
+
+        holder.username.setText(getItem(position).getUser_name());
+
+        ImageLoader imageLoader = ImageLoader.getInstance();
+
+        imageLoader.displayImage(
+                getItem(position).getUser_photo(),
+                holder.profileImage);
 
         //set the timestamp difference
         String timestampDifference = getTimestampDifference(getItem(position));
@@ -91,32 +105,61 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
         }
 
         //set the username and profile image
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        Query query = reference
-                .child(mContext.getString(R.string.dbname_user_account_settings))
-                .orderByChild(mContext.getString(R.string.field_user_id))
-                .equalTo(getItem(position).getUser_id());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
-                    holder.username.setText(
-                            singleSnapshot.getValue(UserAccountSettings.class).getUsername());
-
-                    ImageLoader imageLoader = ImageLoader.getInstance();
-
-                    imageLoader.displayImage(
-                            singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
-                            holder.profileImage);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "onCancelled: query cancelled.");
-            }
-        });
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+//        Query query = reference
+//                .child(mContext.getString(R.string.dbname_user_account_settings))
+//                .orderByChild(mContext.getString(R.string.field_user_id))
+//                .equalTo(getItem(position).getUser_id());
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
+//                    holder.username.setText(
+//                            singleSnapshot.getValue(UserAccountSettings.class).getUsername());
+//
+//                    ImageLoader imageLoader = ImageLoader.getInstance();
+//
+//                    imageLoader.displayImage(
+//                            singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
+//                            holder.profileImage);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.d(TAG, "onCancelled: query cancelled.");
+//            }
+//        });
+//        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+//        Query query = reference
+//                .child("photos")
+//                .child(getItem(position).toString())
+//                .child("comments")
+//                .orderByChild(mContext.getString(R.string.field_user_id));
+//
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
+//                    holder.username.setText(
+//                            singleSnapshot.getValue(Comment.class).getUser_name());
+//                    holder.
+//
+//                    ImageLoader imageLoader = ImageLoader.getInstance();
+//
+//                    imageLoader.displayImage(
+//                            singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
+//                            holder.profileImage);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.d(TAG, "onCancelled: query cancelled.");
+//            }
+//        });
 
         try{
             if(position == 0){

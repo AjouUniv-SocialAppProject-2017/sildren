@@ -1,20 +1,30 @@
 package media.socialapp.sildren;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -78,6 +88,44 @@ public class ChatGroupActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+                
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.LL_chatgroup_activity);
+                        Log.d(TAG, "logout_menu - clicked");
+                        LayoutInflater inflater = (LayoutInflater)
+                                getSystemService(LAYOUT_INFLATER_SERVICE);
+                        View popupView = inflater.inflate(R.layout.popup_chatout, null);
+                        AppCompatButton chatoutBtn = (AppCompatButton) popupView.findViewById(R.id.chatout_btn);
+                        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        boolean focusable = true; // lets taps outside the popup also dismiss it
+                        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                        chatoutBtn = (AppCompatButton) popupView.findViewById(R.id.chatout_btn);
+                        chatoutBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d(TAG, "chatout_btn - clicked");
+                                FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+                                DatabaseReference groupRef = mFirebaseDatabase.getReference();
+                                groupRef.child("chat_groups").child(holder.getGroupName()).removeValue();
+                            }
+                        });
+                        popupView.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                popupWindow.dismiss();
+                                return true;
+                            }
+                        });
+                        // show the popup window
+                        popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+
+                        return false;
+                    }
+                });
 
             }
 
@@ -129,6 +177,10 @@ public class ChatGroupActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    public void onChatGroupRemove() {
 
     }
 
@@ -186,4 +238,26 @@ public class ChatGroupActivity extends AppCompatActivity {
 //                        .into(imageView);
 //            }
 
+    public static void dimBehind(PopupWindow popupWindow) {
+        View container;
+        if (popupWindow.getBackground() == null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent();
+            } else {
+                container = popupWindow.getContentView();
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                container = (View) popupWindow.getContentView().getParent().getParent();
+            } else {
+                container = (View) popupWindow.getContentView().getParent();
+            }
+        }
+        Context context = popupWindow.getContentView().getContext();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.3f;
+        wm.updateViewLayout(container, p);
+    }
 }

@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private ListView mListView;
     private SignInButton mBtnGoogleSignIn;
+
     //    private Button mBtnSignUp;
     private Button mBtnSignIn;
     private EditText mEmailField;

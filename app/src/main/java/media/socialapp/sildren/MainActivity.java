@@ -363,6 +363,8 @@ public class MainActivity extends AppCompatActivity implements
         myRef.child("chat_groups").child(title).child("name").setValue(name);
     }
 
+
+
     public void showLayout() {
         Log.d(TAG, "hideLayout: showing layout");
         mRelativeLayout.setVisibility(View.VISIBLE);

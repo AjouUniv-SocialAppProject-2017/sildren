@@ -106,6 +106,11 @@ public class GalleryFragment extends Fragment {
         if (FileSearch.getDirectoryPaths(filePaths.PICTURES) != null) {
             directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
         }
+
+        if (FileSearch.getDirectoryPaths(filePaths.DOWNLOADS) != null) {
+            directories = FileSearch.getDirectoryPaths(filePaths.DOWNLOADS);
+        }
+
         directories.add(filePaths.CAMERA);
 
         ArrayList<String> directoryNames = new ArrayList<>();

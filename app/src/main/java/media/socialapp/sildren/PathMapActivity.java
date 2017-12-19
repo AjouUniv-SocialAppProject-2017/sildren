@@ -299,8 +299,8 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
                     View v = getLayoutInflater().inflate(R.layout.info_window, null);
 
                     TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
-                    TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
-                    TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
+                    TextView tvLat = (TextView) v.findViewById(R.id.pin_name);
+//                    TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
                     TextView tvSnippet = (TextView) v.findViewById(R.id.tv_snippet);
                     //ImageView imageView = (ImageView) v.findViewById(R.id.info_image);
 
@@ -550,6 +550,7 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
 
                 return;
             }
+            updateLocationUI();
             mLastKnownLocation = LocationServices.FusedLocationApi
                     .getLastLocation(mGoogleApiClient);
             mGoogleMap.setMyLocationEnabled(true);
@@ -557,7 +558,7 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
             verifyPermissions(Permissions.PERMISSIONS);
         }
 
-
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
         // Set the map's camera position to the current location of the device.
         if (mCameraPosition != null) {
             mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
@@ -570,6 +571,26 @@ public class PathMapActivity extends AppCompatActivity implements OnMapReadyCall
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
             mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
+    }
+    private void updateLocationUI() {
+        if (mGoogleMap == null) {
+            return;
+        }
+        if (checkPermissionsArray(Permissions.PERMISSIONS)) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                return;
+            }
+            mGoogleMap.setMyLocationEnabled(true);
+            mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        } else {
+            verifyPermissions(Permissions.PERMISSIONS);
+        }
+
     }
 //    private void drawLine() {
 //

@@ -24,6 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -123,10 +124,29 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         holder.name.setText(getItem(position).getName());
         Log.d(TAG, "getName() " + getItem(position).getName());
 
+        final List<Comment> comments = new ArrayList<>();
+        Query commentQuery = mReference
+                .child(mContext.getString(R.string.dbname_photos))
+                .child(getItem(position).getPhoto_id()).child("comments");
+        commentQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    comments.add(singleSnapshot.getValue(Comment.class));
+                    Log.d(TAG, "commets add " + singleSnapshot.getValue(Comment.class));
+                    Log.d(TAG, "commets size " + comments.size());
+                    holder.comments.setText("모든 " + comments.size() + "개 댓글보기");
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        List<Comment> comments = getItem(position).getComments();
-        holder.comments.setText("모든 " + comments.size() + "개 댓글보기");
+            }
+        });
+
+//        List<Comment> comments = getItem(position).getComments();
+//        holder.comments.setText("모든 " + comments.size() + "개 댓글보기");
         holder.comments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,6 +187,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     currentUsername = singleSnapshot.getValue(UserAccountSettings.class).getUsername();
+
 
                     Log.d(TAG, "onDataChange: found user: "
                             + singleSnapshot.getValue(UserAccountSettings.class).getUsername());
@@ -297,6 +318,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
 
                             mHolder.heart.toggleLike();
                             getLikesString(mHolder);
+                            Log.d(TAG,"mHolder :" + mHolder);
                         }
                         //유저가 좋아요를 아직 안한 경우
                         else if(!mHolder.likeByCurrentUser){
@@ -328,6 +350,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         String newLikeID = mReference.push().getKey();
         Like like = new Like();
         like.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        like.setUser_name(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
 
         mReference.child(mContext.getString(R.string.dbname_photos))
                 .child(holder.photo.getPhoto_id())
@@ -381,70 +404,129 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUsername = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                Log.d(TAG,"singleSnapshot - " + dataSnapshot);
+
+                Log.d(TAG, "currentUsername: " +
+                        FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                 holder.users = new StringBuilder();
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    Log.d(TAG,"singleSnapshot.getValue(Like.class).getUser_name - " + singleSnapshot.getValue(Like.class).getUser_name());
+                    Log.d(TAG,"singleSnapshot - " + singleSnapshot);
+                    Log.d(TAG, "onDataChange: found like: " +
+                            singleSnapshot.getValue(User.class).getUsername());
+                    Log.d(TAG, "onDataChange: like username: " +
+                            singleSnapshot.getValue());
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                    Query query = reference
-                            .child(mContext.getString(R.string.dbname_users))
-                            .orderByChild(mContext.getString(R.string.field_user_id))
-                            .equalTo(singleSnapshot.getValue(Like.class).getUser_id());
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                                Log.d(TAG, "onDataChange: found like: " +
-                                        singleSnapshot.getValue(User.class).getUsername());
 
-                                holder.users.append(singleSnapshot.getValue(User.class).getUsername());
-                                holder.users.append(",");
-                            }
-
-                            String[] splitUsers = holder.users.toString().split(",");
-
-                            if(holder.users.toString().contains(currentUsername + ",")){
-                                holder.likeByCurrentUser = true;
-                            }else{
-                                holder.likeByCurrentUser = false;
-                            }
-
-                            int length = splitUsers.length;
-                            if(length == 1){
-                                holder.likesString = splitUsers[0] + " 가 좋아합니다. ";
-                            }
-                            else if(length == 2){
-                                holder.likesString = "Liked by " + splitUsers[0]
-                                        + " 와 " + splitUsers[1] + " 가 좋아합니다. ";
-                            }
-                            else if(length == 3){
-                                holder.likesString = "Liked by " + splitUsers[0]
-                                        + ", " + splitUsers[1]
-                                        + " 와 " + splitUsers[2] + " 가 좋아합니다. ";
-
-                            }
-                            else if(length == 4){
-                                holder.likesString = splitUsers[0]
-                                        + ", " + splitUsers[1]
-                                        + ", " + splitUsers[2]
-                                        + " 와 " + splitUsers[3] + " 가 좋아합니다. ";
-                            }
-                            else if(length > 4){
-                                holder.likesString = splitUsers[0]
-                                        + ", " + splitUsers[1]
-                                        + ", " + splitUsers[2]
-                                        + " 외 " + (splitUsers.length - 3) + "명이 좋아합니다. ";
-                            }
-                            Log.d(TAG, "onDataChange: likes string: " + holder.likesString);
-                            //setup likes string
-                            setupLikesString(holder, holder.likesString);
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+//                    holder.users.append(singleSnapshot.getValue(User.class).getUsername());
+                    holder.users.append(singleSnapshot.getValue(Like.class).getUser_name());
+                    holder.users.append(",");
                 }
+
+
+
+                String[] splitUsers = holder.users.toString().split(",");
+
+                if(holder.users.toString().contains(currentUsername + ",")){
+                    holder.likeByCurrentUser = true;
+                }else{
+                    holder.likeByCurrentUser = false;
+                }
+
+                int length = splitUsers.length;
+                if(length == 1){
+                    holder.likesString = splitUsers[0] + " 가 좋아합니다. ";
+                }
+                else if(length == 2){
+                    holder.likesString = "Liked by " + splitUsers[0]
+                            + " 와 " + splitUsers[1] + " 가 좋아합니다. ";
+                }
+                else if(length == 3){
+                    holder.likesString = "Liked by " + splitUsers[0]
+                            + ", " + splitUsers[1]
+                            + " 와 " + splitUsers[2] + " 가 좋아합니다. ";
+
+                }
+                else if(length == 4){
+                    holder.likesString = splitUsers[0]
+                            + ", " + splitUsers[1]
+                            + ", " + splitUsers[2]
+                            + " 와 " + splitUsers[3] + " 가 좋아합니다. ";
+                }
+                else if(length > 4){
+                    holder.likesString = splitUsers[0]
+                            + ", " + splitUsers[1]
+                            + ", " + splitUsers[2]
+                            + " 외 " + (splitUsers.length - 3) + "명이 좋아합니다. ";
+                }
+                Log.d(TAG, "onDataChange: likes string: " + holder.likesString);
+                //setup likes string
+                setupLikesString(holder, holder.likesString);
+//                holder.users = new StringBuilder();
+//                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+//
+//                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+//                    Query query = reference
+//                            .child(mContext.getString(R.string.dbname_users))
+//                            .orderByChild(mContext.getString(R.string.field_user_id))
+//                            .equalTo(singleSnapshot.getValue(Like.class).getUser_id());
+//                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+//                                Log.d(TAG, "onDataChange: found like: " +
+//                                        singleSnapshot.getValue(User.class).getUsername());
+//
+//                                holder.users.append(singleSnapshot.getValue(User.class).getUsername());
+//                                holder.users.append(",");
+//                            }
+//
+//                            String[] splitUsers = holder.users.toString().split(",");
+//
+//                            if(holder.users.toString().contains(currentUsername + ",")){
+//                                holder.likeByCurrentUser = true;
+//                            }else{
+//                                holder.likeByCurrentUser = false;
+//                            }
+//
+//                            int length = splitUsers.length;
+//                            if(length == 1){
+//                                holder.likesString = splitUsers[0] + " 가 좋아합니다. ";
+//                            }
+//                            else if(length == 2){
+//                                holder.likesString = "Liked by " + splitUsers[0]
+//                                        + " 와 " + splitUsers[1] + " 가 좋아합니다. ";
+//                            }
+//                            else if(length == 3){
+//                                holder.likesString = "Liked by " + splitUsers[0]
+//                                        + ", " + splitUsers[1]
+//                                        + " 와 " + splitUsers[2] + " 가 좋아합니다. ";
+//
+//                            }
+//                            else if(length == 4){
+//                                holder.likesString = splitUsers[0]
+//                                        + ", " + splitUsers[1]
+//                                        + ", " + splitUsers[2]
+//                                        + " 와 " + splitUsers[3] + " 가 좋아합니다. ";
+//                            }
+//                            else if(length > 4){
+//                                holder.likesString = splitUsers[0]
+//                                        + ", " + splitUsers[1]
+//                                        + ", " + splitUsers[2]
+//                                        + " 외 " + (splitUsers.length - 3) + "명이 좋아합니다. ";
+//                            }
+//                            Log.d(TAG, "onDataChange: likes string: " + holder.likesString);
+//                            //setup likes string
+//                            setupLikesString(holder, holder.likesString);
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//                }
                 if(!dataSnapshot.exists()){
                     holder.likesString = "";
                     holder.likeByCurrentUser = false;

@@ -37,8 +37,7 @@ import java.util.TimeZone;
 import media.socialapp.sildren.DataModels.Comment;
 import media.socialapp.sildren.DataModels.Photo;
 import media.socialapp.sildren.utilities.CommentListAdapter;
-
-
+import media.socialapp.sildren.utilities.FirebaseMethods;
 
 
 public class ViewCommentsFragment extends Fragment {
@@ -146,7 +145,14 @@ public class ViewCommentsFragment extends Fragment {
         Comment comment = new Comment();
         comment.setComment(newComment);
         comment.setDate_created(getTimestamp());
+        comment.setUser_name(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        comment.setUser_photo(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
         comment.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
+        Log.d(TAG, "inserting comment to photo :  " +
+                FirebaseAuth.getInstance().getCurrentUser().getDisplayName() + "," +
+                FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString() );
 
         //insert into photos node
         myRef.child(getString(R.string.dbname_photos))
@@ -249,6 +255,7 @@ public class ViewCommentsFragment extends Fragment {
                                 .child(mContext.getString(R.string.dbname_photos))
                                 .orderByChild(mContext.getString(R.string.field_photo_id))
                                 .equalTo(mPhoto.getPhoto_id());
+//
                         query.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -275,17 +282,23 @@ public class ViewCommentsFragment extends Fragment {
                                     for (DataSnapshot dSnapshot : singleSnapshot
                                            .child(mContext.getString(R.string.field_comments)).getChildren()){
                                         Comment comment = new Comment();
-                                        comment.setUser_id(dSnapshot.getValue(Comment.class).getUser_id());
+                                        comment.setUser_photo(dSnapshot.getValue(Comment.class).getUser_photo());
+                                        comment.setUser_name(dSnapshot.getValue(Comment.class).getUser_name());
+                                        comment.setUser_id(dSnapshot.getValue(Comment.class).getUser_id());  //댓글 이름
                                         comment.setComment(dSnapshot.getValue(Comment.class).getComment());
                                         comment.setDate_created(dSnapshot.getValue(Comment.class).getDate_created());
+
+                                        Log.d(TAG,"dSnapshot getUser_photo : " + dSnapshot.getValue(Comment.class).getUser_photo());
+                                        Log.d(TAG,"dSnapshot getUser_name : " + dSnapshot.getValue(Comment.class).getUser_name());
+                                        Log.d(TAG,"dSnapshot getComment : " + dSnapshot.getValue(Comment.class).getComment());
+                                        Log.d(TAG,"dSnapshot getDate_created : " + dSnapshot.getValue(Comment.class).getDate_created());
                                         mComments.add(comment);
                                     }
 
                                     photo.setComments(mComments);
-
                                     mPhoto = photo;
-
                                    setupWidgets();
+
 //                    List<Like> likesList = new ArrayList<Like>();
 //                    for (DataSnapshot dSnapshot : singleSnapshot
 //                            .child(getString(R.string.field_likes)).getChildren()){

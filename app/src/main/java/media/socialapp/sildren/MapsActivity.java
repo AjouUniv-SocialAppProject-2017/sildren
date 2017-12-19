@@ -184,8 +184,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     View v = getLayoutInflater().inflate(R.layout.info_window, null);
 
                     TextView tvLocality = (TextView) v.findViewById(R.id.tv_locality);
-                    TextView tvLat = (TextView) v.findViewById(R.id.tv_lat);
-                    TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
+                    TextView tvLat = (TextView) v.findViewById(R.id.pin_name);
+//                    TextView tvLng = (TextView) v.findViewById(R.id.tv_lng);
                     TextView tvSnippet = (TextView) v.findViewById(R.id.tv_snippet);
                     //ImageView imageView = (ImageView) v.findViewById(R.id.info_image);
 
@@ -194,7 +194,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     LatLng ll = marker.getPosition();
                     tvLocality.setText(marker.getTitle());
                     tvLat.setText("Latitude: " + ll.latitude);
-                    tvLng.setText("Longitude: " + ll.longitude);
+                    tvLat.setVisibility(View.GONE);
+//                    tvLng.setText("Longitude: " + ll.longitude);
                     tvSnippet.setText(marker.getSnippet());
 
                     return v;

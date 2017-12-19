@@ -3,6 +3,7 @@ package media.socialapp.sildren;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import com.nhn.android.data.e;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -107,9 +109,12 @@ public class GalleryFragment extends Fragment {
             directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
         }
 
-        if (FileSearch.getDirectoryPaths(filePaths.DOWNLOADS) != null) {
-            directories = FileSearch.getDirectoryPaths(filePaths.DOWNLOADS);
+        try{
+            directories.add(filePaths.DOWNLOAD);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         directories.add(filePaths.CAMERA);
 

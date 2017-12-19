@@ -4,9 +4,6 @@ import com.google.android.gms.maps.model.Marker;
 
 import media.socialapp.sildren.utilities.OnMarkerSetListener;
 
-/**
- * Created by TedPark on 16. 4. 26..
- */
 public class MarkerItem {
 
 

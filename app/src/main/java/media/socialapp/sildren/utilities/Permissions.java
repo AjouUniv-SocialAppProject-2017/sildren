@@ -4,9 +4,6 @@ import android.Manifest;
 
 import media.socialapp.sildren.MainActivity;
 
-/**
- * Created by User on 7/10/2017.
- */
 
 public class Permissions {
 

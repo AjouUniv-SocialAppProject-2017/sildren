@@ -19,10 +19,6 @@ import java.util.ArrayList;
 import media.socialapp.sildren.R;
 
 
-/**
- * Created by User on 6/4/2017.
- */
-
 public class GridImageAdapter extends ArrayAdapter<String>{
 
     private Context mContext;
